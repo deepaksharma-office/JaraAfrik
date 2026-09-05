@@ -1,0 +1,52 @@
+{% liquid
+  if eager_loading
+    if block_settings.menu_style == 'featured_collections'
+      assign featured_collections = links | where: 'type', 'collection_link'
+    endif
+
+    if block_settings.menu_style == 'featured_products'
+      assign collection_linklist = links | where: 'type', 'collection_link' | first
+      assign featured_products_collection = collection_linklist.object
+    endif
+  else
+    assign featured_collections = null | sort
+    assign featured_products_collection = null | sort
+  endif
+-%}
+
+{% if featured_collections.size > 0 or featured_products_collection.products_count > 0 %}
+  <div
+    class="menu-drawer__featured-content menu-drawer__featured-content--childlist"
+    style="--menu-drawer-animation-index: {{ links.size | plus: 1 }};"
+  >
+    <ul class="menu-drawer__featured-content-list list-unstyled">
+      {% if featured_collections.size > 0 %}
+        {%- for collection in featured_collections limit: max_featured_items -%}
+          <li class="menu-drawer__featured-content-list-item menu-drawer__featured-content-list-item--collection">
+            {% render 'resource-card',
+              resource: collection.object,
+              resource_type: 'collection',
+              style: 'overlay',
+              image_aspect_ratio: ratio,
+              image_sizes: 'auto, 400px'
+            %}
+          </li>
+        {%- endfor -%}
+      {% else %}
+        {% paginate featured_products_collection.products by max_featured_items %}
+          {%- for product in featured_products_collection.products limit: max_featured_items -%}
+            <li class="menu-drawer__featured-content-list-item menu-drawer__featured-content-list-item--product">
+              {% render 'resource-card',
+                resource: product,
+                resource_type: 'product',
+                image_aspect_ratio: ratio,
+                image_sizes: 'auto, 400px',
+                product_view_context: 'dialog'
+              %}
+            </li>
+          {%- endfor -%}
+        {% endpaginate %}
+      {% endif %}
+    </ul>
+  </div>
+{% endif %}

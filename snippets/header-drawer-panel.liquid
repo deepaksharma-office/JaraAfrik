@@ -1,0 +1,56 @@
+{%- comment -%}
+  Render one menu page, then its descendants as sibling pages. Index paths keep
+  IDs unique even when titles or URLs repeat. No menu depth is assumed.
+{%- endcomment -%}
+<div id="{{ panel_id }}" class="menu-drawer__page" data-drawer-page
+  {% if parent_link %}hidden inert aria-hidden="true"{% else %}data-drawer-root{% endif %}
+>
+  {% if parent_link %}
+    <div class="menu-drawer__page-header">
+      <button type="button" class="menu-drawer__page-back focus-inset"
+        data-drawer-back aria-label="{{ 'actions.back' | t | escape }}">
+        <span class="svg-wrapper icon-caret--backward">{{ 'icon-caret.svg' | inline_asset_content }}</span>
+      </button>
+      <a href="{{ parent_link.url }}" class="menu-drawer__page-title menu-drawer__menu-item--parent focus-inset"
+        {% if parent_link.current %}aria-current="page"{% endif %}>
+        {{ parent_link.title | escape }}
+      </a>
+    </div>
+  {% endif %}
+  <ul class="menu-drawer__menu menu-drawer__page-list" role="list">
+    {% for link in links %}
+      {% assign child_id = panel_id | append: '-' | append: forloop.index %}
+      <li class="menu-drawer__list-item">
+        {% capture row_class %}menu-drawer__menu-item focus-inset {% if parent_link %}menu-drawer__menu-item--parent{% else %}menu-drawer__menu-item--mainlist{% endif %}{% if link.current or link.child_active %} menu-drawer__menu-item--active{% endif %}{% endcapture %}
+        {% if link.links != blank %}
+          <button type="button" class="{{ row_class }}" data-drawer-forward="{{ child_id }}"
+            aria-controls="{{ child_id }}" aria-expanded="false">
+            <span class="menu-drawer__menu-item-text wrap-text">{{ link.title | escape }}</span>
+            <span class="svg-wrapper icon-caret--forward">{{ 'icon-caret.svg' | inline_asset_content }}</span>
+          </button>
+        {% else %}
+          <a href="{{ link.url }}" class="{{ row_class }}" {% if link.current %}aria-current="page"{% endif %}>
+            <span class="menu-drawer__menu-item-text wrap-text">
+              {% if parent_link and block_settings.menu_style == 'collection_images' %}
+                {% render 'link-featured-image', link: link, class: 'menu-drawer__link-image', sizes: 'auto, 400px' %}
+              {% endif %}
+              {{ link.title | escape }}
+            </span>
+          </a>
+        {% endif %}
+      </li>
+    {% endfor %}
+  </ul>
+  {% if parent_link %}
+    {% render 'header-drawer-panel-featured', links: links, block_settings: block_settings,
+      eager_loading: eager_loading, ratio: ratio, max_featured_items: max_featured_items %}
+  {% endif %}
+</div>
+{% for link in links %}
+  {% if link.links != blank %}
+    {% assign child_id = panel_id | append: '-' | append: forloop.index %}
+    {% render 'header-drawer-panel', links: link.links, parent_link: link, panel_id: child_id,
+      block_settings: block_settings, eager_loading: eager_loading, ratio: ratio,
+      max_featured_items: max_featured_items %}
+  {% endif %}
+{% endfor %}

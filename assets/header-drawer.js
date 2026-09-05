@@ -14,16 +14,92 @@ import { onAnimationEnd, removeWillChangeOnAnimationEnd } from '@theme/utilities
 class HeaderDrawer extends Component {
   requiredRefs = ['details', 'menuDrawer'];
 
+  /** @type {{panel: HTMLElement, trigger: HTMLButtonElement}[]} */
+  #pageStack = [];
+  /** @type {Animation[]} */
+  #pageAnimations = [];
+
+  #resetPages = () => {
+    this.#pageAnimations.forEach((animation) => animation.cancel());
+    this.#pageAnimations = [];
+    this.#pageStack = [];
+    this.querySelectorAll('[data-drawer-page]').forEach((page) => {
+      if (!(page instanceof HTMLElement)) return;
+      const inactive = !page.hasAttribute('data-drawer-root');
+      page.hidden = inactive;
+      page.inert = inactive;
+      page.setAttribute('aria-hidden', String(inactive));
+      page.classList.remove('is-leaving');
+    });
+    this.querySelectorAll('[data-drawer-forward]').forEach((trigger) => trigger.setAttribute('aria-expanded', 'false'));
+  };
+
+  #onDrawerToggle = () => {
+    if (!this.isOpen) this.#resetPages();
+  };
+
+  /** @param {MouseEvent} event */
+  #onPageClick = (event) => {
+    if (!(event.target instanceof Element)) return;
+    const trigger = event.target.closest('[data-drawer-forward], [data-drawer-back]');
+    if (!(trigger instanceof HTMLButtonElement)) return;
+    const current = trigger.closest('[data-drawer-page]');
+    if (!(current instanceof HTMLElement) || current.inert) return;
+    const backwards = trigger.hasAttribute('data-drawer-back');
+    const entry = backwards ? this.#pageStack.pop() : null;
+    const next = backwards ? entry?.panel : Array.from(this.querySelectorAll('[data-drawer-page]'))
+      .find((page) => page.id === trigger.dataset.drawerForward);
+    if (!(next instanceof HTMLElement)) return;
+    if (!backwards) this.#pageStack.push({ panel: current, trigger });
+    (entry?.trigger ?? trigger).setAttribute('aria-expanded', String(!backwards));
+
+    this.#pageAnimations.forEach((animation) => animation.cancel());
+    this.querySelectorAll('.is-leaving').forEach((page) => {
+      if (page instanceof HTMLElement) page.hidden = true;
+      page.classList.remove('is-leaving');
+    });
+    next.hidden = false;
+    next.inert = false;
+    next.setAttribute('aria-hidden', 'false');
+    current.classList.add('is-leaving');
+    // Move focus before hiding the previous page from assistive technology.
+    const focus = entry?.trigger ?? next.querySelector('[data-drawer-back]');
+    if (focus instanceof HTMLElement) focus.focus({ preventScroll: true });
+    current.inert = true;
+    current.setAttribute('aria-hidden', 'true');
+    this.refs.menuDrawer.scrollTop = 0;
+    trapFocus(this.refs.details);
+
+    const speed = getComputedStyle(this.refs.menuDrawer).getPropertyValue('--drawer-animation-speed').trim();
+    const duration = matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 :
+      (parseFloat(speed) || 0.2) * (speed.endsWith('ms') ? 1 : 1000);
+    const direction = backwards ? -1 : 1;
+    this.#pageAnimations = [
+      current.animate([{ transform: 'translateX(0)' }, { transform: `translateX(${-direction * 100}%)` }], { duration, easing: 'ease' }),
+      next.animate([{ transform: `translateX(${direction * 100}%)` }, { transform: 'translateX(0)' }], { duration, easing: 'ease' }),
+    ];
+    this.#pageAnimations[0].finished.then(() => {
+      current.hidden = true;
+      current.classList.remove('is-leaving');
+    }).catch(() => { /* A new navigation or drawer reset cancelled the transition. */ });
+  };
+
   connectedCallback() {
     super.connectedCallback();
 
     this.addEventListener('keyup', this.#onKeyUp);
+    this.addEventListener('click', this.#onPageClick);
+    this.refs.details.addEventListener('toggle', this.#onDrawerToggle);
+    this.#resetPages();
     this.#setupAnimatedElementListeners();
   }
 
   disconnectedCallback() {
     super.disconnectedCallback();
     this.removeEventListener('keyup', this.#onKeyUp);
+    this.removeEventListener('click', this.#onPageClick);
+    this.refs.details.removeEventListener('toggle', this.#onDrawerToggle);
+    this.#resetPages();
   }
 
   /**
@@ -126,7 +202,9 @@ class HeaderDrawer extends Component {
       () => {
         reset(details);
         if (details === this.refs.details) {
+          this.#resetPages();
           removeTrapFocus();
+          summary.focus({ preventScroll: true });
           const openDetails = this.querySelectorAll('details[open]:not(accordion-custom > details)');
           openDetails.forEach(reset);
         } else {
