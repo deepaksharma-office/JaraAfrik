@@ -1,0 +1,811 @@
+<section
+  id="testimonial-section-{{ section.id }}"
+  class="testimonial-section"
+>
+  <div class="testimonial-section__inner">
+
+    {% if section.settings.eyebrow != blank %}
+      <div class="testimonial-section__eyebrow">
+        {{ section.settings.eyebrow }}
+      </div>
+    {% endif %}
+
+    {% if section.settings.heading != blank %}
+      <h2 class="testimonial-section__heading">
+        {{ section.settings.heading }}
+      </h2>
+    {% endif %}
+
+    <div class="testimonial-slider-wrap">
+
+      <div
+        id="splide-{{ section.id }}"
+        class="splide testimonial-splide"
+        aria-label="{{ section.settings.heading | escape }}"
+      >
+        <div class="splide__track">
+          <ul class="splide__list">
+
+            {% for block in section.blocks %}
+              <li
+                class="splide__slide testimonial-slide"
+                data-block-id="{{ block.id }}"
+                data-slide-index="{{ forloop.index0 }}"
+                {{ block.shopify_attributes }}
+              >
+                <div class="testimonial-card">
+
+                  {% if block.settings.rating > 0 %}
+                    <div
+                      class="testimonial-rating"
+                      aria-label="{{ block.settings.rating }} out of 5 stars"
+                    >
+                      {% for i in (1..5) %}
+                        <span class="{% if i <= block.settings.rating %}is-active{% endif %}">
+                          ★
+                        </span>
+                      {% endfor %}
+                    </div>
+                  {% endif %}
+
+                  {% if block.settings.quote != blank %}
+                    <blockquote class="testimonial-quote">
+                      {{ block.settings.quote }}
+                    </blockquote>
+                  {% endif %}
+
+                  <div class="testimonial-author">
+
+                    {% if block.settings.avatar != blank %}
+                      <div class="testimonial-avatar testimonial-avatar--image">
+                        {{
+                          block.settings.avatar
+                          | image_url: width: 120
+                          | image_tag:
+                            loading: 'lazy',
+                            widths: '60, 90, 120',
+                            sizes: '60px',
+                            alt: block.settings.name
+                        }}
+                      </div>
+                    {% else %}
+                      <div class="testimonial-avatar">
+                        {{ block.settings.initials | default: 'AO' | escape }}
+                      </div>
+                    {% endif %}
+
+                    <div class="testimonial-author-info">
+
+                      {% if block.settings.name != blank %}
+                        <div class="testimonial-name">
+                          {{ block.settings.name }}
+                        </div>
+                      {% endif %}
+
+                      {% if block.settings.location != blank %}
+                        <div class="testimonial-location">
+                          <svg
+                            width="13"
+                            height="13"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            aria-hidden="true"
+                          >
+                            <path
+                              d="M12 21s7-6.1 7-12a7 7 0 1 0-14 0c0 5.9 7 12 7 12Z"
+                              stroke="currentColor"
+                              stroke-width="1.7"
+                            />
+                            <circle
+                              cx="12"
+                              cy="9"
+                              r="2.2"
+                              stroke="currentColor"
+                              stroke-width="1.7"
+                            />
+                          </svg>
+
+                          <span>{{ block.settings.location }}</span>
+                        </div>
+                      {% endif %}
+
+                    </div>
+                  </div>
+
+                </div>
+              </li>
+            {% endfor %}
+
+          </ul>
+        </div>
+      </div>
+
+      <div
+        class="testimonial-controls"
+        aria-label="Testimonial navigation"
+      >
+
+        <button
+          type="button"
+          class="testimonial-control testimonial-control--previous"
+          aria-label="Previous Slide"
+        >
+          <svg
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            aria-hidden="true"
+          >
+            <path
+              d="M15 18 9 12l6-6"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </button>
+
+        <div
+          class="testimonial-pagination"
+          aria-label="Testimonial pagination"
+        ></div>
+
+        <button
+          type="button"
+          class="testimonial-control testimonial-control--next"
+          aria-label="Next Slide"
+        >
+          <svg
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            aria-hidden="true"
+          >
+            <path
+              d="m9 18 6-6-6-6"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </button>
+
+      </div>
+
+    </div>
+  </div>
+</section>
+
+{% render 'splide-slider',
+  slider_id: section.id,
+  section_id: section.id
+%}
+
+<style>
+  #testimonial-section-{{ section.id }} {
+    --testimonial-bg: {{ section.settings.background_color }};
+    --testimonial-card-bg: {{ section.settings.card_background }};
+    --testimonial-text: {{ section.settings.text_color }};
+    --testimonial-muted: {{ section.settings.muted_color }};
+    --testimonial-accent: {{ section.settings.accent_color }};
+    --testimonial-avatar: {{ section.settings.avatar_color }};
+    --testimonial-radius: {{ section.settings.card_radius }}px;
+    --testimonial-max-width: {{ section.settings.content_width }}px;
+
+    background: var(--testimonial-bg);
+    color: var(--testimonial-text);
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+    overflow: hidden;
+  }
+
+  #testimonial-section-{{ section.id }} .testimonial-section__inner {
+    width: min(
+      calc(100% - 40px),
+      var(--testimonial-max-width)
+    );
+    margin: 0 auto;
+  }
+
+  /* Eyebrow */
+  #testimonial-section-{{ section.id }} .testimonial-section__eyebrow {
+    margin-bottom: 16px;
+    text-align: center;
+    font-size: 10px;
+    line-height: 1.4;
+    font-weight: 500;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--testimonial-muted);
+  }
+
+  /* Heading */
+  #testimonial-section-{{ section.id }} .testimonial-section__heading {
+    margin: 0 auto 48px;
+    max-width: 800px;
+    text-align: center;
+    color: var(--testimonial-text);
+    font-size: clamp(30px, 3.1vw, 43px);
+    line-height: 1.15;
+    letter-spacing: -0.025em;
+    font-weight: 600;
+  }
+
+  /* Slider */
+  #testimonial-section-{{ section.id }} .testimonial-slider-wrap {
+    width: 100%;
+  }
+
+  #testimonial-section-{{ section.id }} .testimonial-splide {
+    width: 100%;
+    visibility: hidden;
+  }
+
+  #testimonial-section-{{ section.id }} .splide__track {
+    overflow: visible;
+  }
+
+  #testimonial-section-{{ section.id }} .testimonial-slide {
+    padding: 0 0 4px;
+  }
+
+  /* Card */
+  #testimonial-section-{{ section.id }} .testimonial-card {
+    width: 100%;
+    min-height: 267px;
+    padding: 38px 55px 39px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+
+    text-align: center;
+
+    background: var(--testimonial-card-bg);
+    border-radius: var(--testimonial-radius);
+
+    box-shadow:
+      0 20px 32px rgba(35, 27, 23, 0.12),
+      0 7px 15px rgba(35, 27, 23, 0.06);
+
+    box-sizing: border-box;
+  }
+
+  /* Rating */
+  #testimonial-section-{{ section.id }} .testimonial-rating {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    margin-bottom: 19px;
+    color: var(--testimonial-accent);
+    font-size: 15px;
+    line-height: 1;
+  }
+
+  #testimonial-section-{{ section.id }} .testimonial-rating span {
+    display: block;
+  }
+
+  /* Quote */
+  #testimonial-section-{{ section.id }} .testimonial-quote {
+    width: 100%;
+    max-width: 650px;
+    margin: 0 auto 27px;
+
+    color: var(--testimonial-text);
+    font-size: 18px;
+    line-height: 1.55;
+    letter-spacing: -0.01em;
+    font-weight: 600;
+  }
+
+  /* Author */
+  #testimonial-section-{{ section.id }} .testimonial-author {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 13px;
+  }
+
+  #testimonial-section-{{ section.id }} .testimonial-avatar {
+    width: 40px;
+    height: 40px;
+    flex: 0 0 40px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+    background: var(--testimonial-avatar);
+    color: #fff;
+
+    font-size: 12px;
+    line-height: 1;
+    font-weight: 500;
+  }
+
+  #testimonial-section-{{ section.id }} .testimonial-avatar--image {
+    overflow: hidden;
+  }
+
+  #testimonial-section-{{ section.id }} .testimonial-avatar--image img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+  }
+
+  #testimonial-section-{{ section.id }} .testimonial-author-info {
+    text-align: left;
+  }
+
+  #testimonial-section-{{ section.id }} .testimonial-name {
+    margin-bottom: 3px;
+    font-size: 12px;
+    line-height: 1.2;
+    font-weight: 600;
+  }
+
+  #testimonial-section-{{ section.id }} .testimonial-location {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+
+    color: var(--testimonial-muted);
+    font-size: 10px;
+    line-height: 1.2;
+  }
+
+  #testimonial-section-{{ section.id }} .testimonial-location svg {
+    flex: 0 0 auto;
+  }
+
+  /* Controls */
+  #testimonial-section-{{ section.id }} .testimonial-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    margin-top: 26px;
+  }
+
+  #testimonial-section-{{ section.id }} .testimonial-control {
+    width: 34px;
+    height: 34px;
+    padding: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 0;
+    border-radius: 50%;
+    cursor: pointer;
+
+    transition:
+      transform 180ms ease,
+      opacity 180ms ease,
+      background-color 180ms ease;
+  }
+
+  #testimonial-section-{{ section.id }} .testimonial-control--previous {
+    background: #e1dedc;
+    color: #332722;
+  }
+
+  #testimonial-section-{{ section.id }} .testimonial-control--next {
+    background: #30231f;
+    color: #fff;
+  }
+
+  #testimonial-section-{{ section.id }} .testimonial-control:hover {
+    transform: scale(1.05);
+  }
+
+  #testimonial-section-{{ section.id }} .testimonial-control:focus-visible {
+    outline: 2px solid var(--testimonial-accent);
+    outline-offset: 3px;
+  }
+
+  /* Custom pagination */
+  #testimonial-section-{{ section.id }} .testimonial-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    min-width: 47px;
+  }
+
+  #testimonial-section-{{ section.id }} .testimonial-pagination button {
+    width: 7px;
+    height: 7px;
+    padding: 0;
+    margin: 0;
+
+    border: 0;
+    border-radius: 999px;
+
+    background: #c7c2bf;
+    opacity: 1;
+    cursor: pointer;
+
+    transition:
+      width 180ms ease,
+      background-color 180ms ease;
+  }
+
+  #testimonial-section-{{ section.id }}
+  .testimonial-pagination button.is-active {
+    width: 20px;
+    background: #30231f;
+  }
+
+  /* Hide Splide's native pagination/arrows */
+  #testimonial-section-{{ section.id }} .splide__pagination,
+  #testimonial-section-{{ section.id }} .splide__arrows {
+    display: none !important;
+  }
+
+  @media screen and (max-width: 767px) {
+    #testimonial-section-{{ section.id }} {
+      padding-top: {{ section.settings.mobile_padding_top }}px;
+      padding-bottom: {{ section.settings.mobile_padding_bottom }}px;
+    }
+
+    #testimonial-section-{{ section.id }} .testimonial-section__inner {
+      width: min(
+        calc(100% - 28px),
+        var(--testimonial-max-width)
+      );
+    }
+
+    #testimonial-section-{{ section.id }} .testimonial-section__heading {
+      margin-bottom: 32px;
+      font-size: 30px;
+    }
+
+    #testimonial-section-{{ section.id }} .testimonial-card {
+      min-height: 290px;
+      padding: 34px 24px 32px;
+      border-radius: 24px;
+    }
+
+    #testimonial-section-{{ section.id }} .testimonial-quote {
+      max-width: 480px;
+      font-size: 17px;
+      line-height: 1.5;
+    }
+
+    #testimonial-section-{{ section.id }} .testimonial-controls {
+      margin-top: 22px;
+    }
+  }
+
+  @media screen and (max-width: 480px) {
+    #testimonial-section-{{ section.id }} .testimonial-section__heading {
+      font-size: 27px;
+    }
+
+    #testimonial-section-{{ section.id }} .testimonial-card {
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+  }
+</style>
+
+<script>
+  (function () {
+    var sectionId = "{{ section.id }}";
+    var root = document.getElementById("testimonial-section-" + sectionId);
+
+    if (!root) return;
+
+    function setupTestimonials() {
+      var splideEl = document.getElementById("splide-" + sectionId);
+
+      if (!splideEl || !splideEl.splideInstance) {
+        setTimeout(setupTestimonials, 100);
+        return;
+      }
+
+      var splide = splideEl.splideInstance;
+      var pagination = root.querySelector(".testimonial-pagination");
+      var previous = root.querySelector(".testimonial-control--previous");
+      var next = root.querySelector(".testimonial-control--next");
+
+      if (!pagination || !previous || !next) return;
+
+      /* Prevent duplicate controls after section reload */
+      if (pagination.dataset.initialized === "true") {
+        updatePagination(splide);
+        return;
+      }
+
+      pagination.dataset.initialized = "true";
+
+      function createPagination() {
+        pagination.innerHTML = "";
+
+        var slides = root.querySelectorAll(
+          ".testimonial-slide"
+        );
+
+        slides.forEach(function (slide, index) {
+          var button = document.createElement("button");
+
+          button.type = "button";
+          button.setAttribute(
+            "aria-label",
+            "Go to slide " + (index + 1)
+          );
+
+          button.addEventListener("click", function () {
+            splide.go(index);
+          });
+
+          pagination.appendChild(button);
+        });
+
+        updatePagination(splide);
+      }
+
+      function updatePagination(instance) {
+        var buttons = pagination.querySelectorAll("button");
+
+        buttons.forEach(function (button, index) {
+          var active = index === instance.index;
+
+          button.classList.toggle("is-active", active);
+          button.setAttribute(
+            "aria-current",
+            active ? "true" : "false"
+          );
+        });
+      }
+
+      previous.addEventListener("click", function () {
+        splide.go("<");
+      });
+
+      next.addEventListener("click", function () {
+        splide.go(">");
+      });
+
+      splide.on("mounted", function () {
+        createPagination();
+        updatePagination(splide);
+      });
+
+      splide.on("move", function () {
+        updatePagination(splide);
+      });
+
+      createPagination();
+    }
+
+    setupTestimonials();
+
+    document.addEventListener(
+      "shopify:section:load",
+      function (event) {
+        if (event.detail.sectionId === sectionId) {
+          setTimeout(setupTestimonials, 150);
+        }
+      }
+    );
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Testimonials",
+  "tag": "section",
+  "class": "section-testimonials",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Reviews"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Loved Across the Jara Afrik Community"
+    },
+
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Section background",
+      "default": "#F5F3F2"
+    },
+    {
+      "type": "color",
+      "id": "card_background",
+      "label": "Card background",
+      "default": "#FCFAF7"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#332722"
+    },
+    {
+      "type": "color",
+      "id": "muted_color",
+      "label": "Muted text color",
+      "default": "#766D68"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Rating color",
+      "default": "#B94D35"
+    },
+    {
+      "type": "color",
+      "id": "avatar_color",
+      "label": "Avatar background",
+      "default": "#50633D"
+    },
+
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "content_width",
+      "label": "Content width",
+      "min": 700,
+      "max": 1400,
+      "step": 10,
+      "unit": "px",
+      "default": 1000
+    },
+    {
+      "type": "range",
+      "id": "card_radius",
+      "label": "Card corner radius",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Desktop top padding",
+      "min": 20,
+      "max": 160,
+      "step": 5,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Desktop bottom padding",
+      "min": 20,
+      "max": 160,
+      "step": 5,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "mobile_padding_top",
+      "label": "Mobile top padding",
+      "min": 20,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 35
+    },
+    {
+      "type": "range",
+      "id": "mobile_padding_bottom",
+      "label": "Mobile bottom padding",
+      "min": 20,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 35
+    }
+  ],
+  "blocks": [
+    {
+      "type": "testimonial",
+      "name": "Testimonial",
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "quote",
+          "label": "Testimonial",
+          "default": "\"Shopping at Jara Afrik feels like walking through a market back home. The quality is unbeatable and delivery was faster than I expected.\""
+        },
+        {
+          "type": "range",
+          "id": "rating",
+          "label": "Rating",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "default": 5
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Customer name",
+          "default": "Adaeze O."
+        },
+        {
+          "type": "text",
+          "id": "location",
+          "label": "Location",
+          "default": "Toronto, ON"
+        },
+        {
+          "type": "text",
+          "id": "initials",
+          "label": "Avatar initials",
+          "default": "AO"
+        },
+        {
+          "type": "image_picker",
+          "id": "avatar",
+          "label": "Avatar image",
+          "info": "Optional. If empty, initials will be shown."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Testimonials",
+      "blocks": [
+        {
+          "type": "testimonial"
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "quote": "\"Beautiful quality and such a smooth shopping experience. I will definitely be ordering again.\"",
+            "name": "Amara K.",
+            "location": "London, UK",
+            "initials": "AK"
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "quote": "\"The pieces feel authentic, beautifully made, and arrived much sooner than expected.\"",
+            "name": "Chioma N.",
+            "location": "New York, NY",
+            "initials": "CN"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,153 @@
+{{ 'hero-slider.css' | asset_url | stylesheet_tag }}
+
+<div class="banner-slider-container">
+  <div class="slider__container-box">
+    <div
+      class="splide {% unless section.blocks.size > 1 %}visible{% endunless %}"
+      {% if section.blocks.size > 1 %}
+        id="splide-{{ section.id }}"
+      {% endif %}
+    >
+      <div class="splide__track">
+        <div class="splide__list">
+          {% if section.blocks.size > 0 %}
+            {% content_for 'blocks' %}
+          {% endif %}
+        </div>
+      </div>
+
+      {% if section.settings.show_arrows %}
+        <div class="splide__arrows splide__arrows--ltr splide-arrows-{{ section.id }}">
+          <button class="splide__arrow splide__arrow--prev">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M13.17 12L8.22 7.05 9.64 5.64 16 12l-6.36 6.36-1.42-1.41z"/>
+            </svg>
+          </button>
+          <button class="splide__arrow splide__arrow--next">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M10.83 12l4.95-4.95-1.41-1.41L8 12l6.36 6.36 1.41-1.41z"/>
+            </svg>
+          </button>
+        </div>
+      {% endif %}
+
+      {% if section.settings.show_pagination %}
+        <ul class="splide__pagination splide-pagination-{{ section.id }}"></ul>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{% render 'splide-slider', section: section %}
+
+{% schema %}
+{
+  "name": "Hero Slider",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Splide Settings"
+    },
+    {
+      "type": "select",
+      "id": "slider_type",
+      "label": "Slider Type",
+      "options": [
+        { "value": "slide", "label": "Slide" },
+        { "value": "loop", "label": "Loop" },
+        { "value": "fade", "label": "Fade" }
+      ],
+      "default": "loop"
+    },
+    {
+      "type": "range",
+      "id": "perPageDesktop",
+      "label": "Slides per view (Desktop)",
+      "min": 1,
+      "max": 1,
+      "step": 1,
+      "default": 1
+    },
+    {
+      "type": "range",
+      "id": "perPageMobile",
+      "label": "Slides per view (Mobile)",
+      "min": 1,
+      "max": 1,
+      "step": 1,
+      "default": 1
+    },
+    {
+      "type": "range",
+      "id": "perMove",
+      "label": "Slides to move",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "default": 1
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "label": "Gap (Desktop)",
+      "min": 0,
+      "max": 60,
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "gap_mobile",
+      "label": "Gap (Mobile)",
+      "min": 0,
+      "max": 60,
+      "default": 0
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Enable autoplay",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "autoplay_speed",
+      "label": "Autoplay speed (seconds)",
+      "min": 1,
+      "max": 10,
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "transition_speed",
+      "label": "Transition speed (ms)",
+      "min": 300,
+      "max": 2000,
+      "step": 100,
+      "default": 1000
+    },
+    {
+      "type": "checkbox",
+      "id": "show_arrows",
+      "label": "Show arrows",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_pagination",
+      "label": "Show pagination",
+      "default": false
+    }
+  ],
+  "blocks": [
+    {
+      "type": "horizon-slide"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero Slider",
+      "category": "Custom"
+    }
+  ]
+}
+{% endschema %}

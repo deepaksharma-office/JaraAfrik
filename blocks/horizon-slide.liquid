@@ -1,0 +1,183 @@
+<div class="splide__slide slider__banner-wrap-custom" {{ block.shopify_attributes }}>
+  <div class="slider__imagcontent-box">
+    <!-- MEDIA -->
+    <div class="customsliderimage__container-all">
+      <div class="banners_images-custom">
+        {% if block.settings.content_type == 'image' %}
+          {% if block.settings.desktop_image %}
+            <img
+              class="customslider customslider--desktop {% if block.settings.mobile_image != blank %}small-hide{% endif %}"
+              src="{{ block.settings.desktop_image | image_url }}"
+              alt="{{ block.settings.alt | escape }}"
+              loading="eager"
+              width="{{ block.settings.desktop_image.width }}"
+              height="{{ block.settings.desktop_image.height }}"
+            >
+          {% else %}
+            {{ 'hero-apparel-1' | placeholder_svg_tag: 'hero__media small-hide' }}
+          {% endif %}
+
+          {% if block.settings.mobile_image %}
+            <img
+              class="customslider customslider--mobile medium-hide large-up-hide"
+              src="{{ block.settings.mobile_image | image_url }}"
+              alt="{{ block.settings.alt | escape }}"
+              loading="eager"
+              width="{{ block.settings.mobile_image.width }}"
+              height="{{ block.settings.mobile_image.height }}"
+            >
+          {% else %}
+            {{ 'hero-apparel-1' | placeholder_svg_tag: 'hero__media medium-hide large-up-hide' }}
+          {% endif %}
+
+        {% elsif block.settings.content_type == 'video' %}
+          {% if block.settings.video != blank %}
+            <div
+              class="video__hero-wrap"
+              style="
+                --slider-video-height-desktop: {{ block.settings.height_desktop }}px;
+                --slider-video-height-mobile: {{ block.settings.height_mobile }}px;
+              "
+            >
+              {{
+                block.settings.video
+                | video_tag:
+                  autoplay: true,
+                  loop: true,
+                  muted: true,
+                  controls: false,
+                  preload: true,
+                  class: 'custom-video_content'
+              }}
+            </div>
+          {% else %}
+            {{ 'hero-apparel-1' | placeholder_svg_tag: 'hero__media' }}
+          {% endif %}
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- OVERLAY -->
+    {% if block.settings.overlay_opacity > 0 %}
+      <div
+        class="customskideroverlay__container-all"
+        style="
+          --slider-overlay-background: {{ block.settings.overlay_color }};
+          --slider-overlay-opacity: {{ block.settings.overlay_opacity }}%;
+        "
+      ></div>
+    {% endif %}
+
+    {% if block.settings.url != blank %}
+      <a
+        class="customskiderurl__container-all"
+        href="{{ block.settings.url }}"
+        aria-label="{{ block.settings.alt }}"
+        {% if block.settings.new_tab %}
+          target="_blank"
+        {% endif %}
+      ></a>
+    {% endif %}
+
+    <!-- CONTENT -->
+    <div class="custom-hero-full">
+      {% content_for 'blocks' %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Hero Slide",
+  "tag": null,
+  "settings": [
+    {
+      "type": "select",
+      "id": "content_type",
+      "label": "Content Type",
+      "options": [
+        { "value": "image", "label": "Image" },
+        { "value": "video", "label": "Video" }
+      ],
+      "default": "image"
+    },
+    {
+      "type": "image_picker",
+      "id": "desktop_image",
+      "label": "Desktop Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "mobile_image",
+      "label": "Mobile Image"
+    },
+    {
+      "type": "text",
+      "id": "alt",
+      "label": "Image alt text"
+    },
+    {
+      "type": "url",
+      "label": "Slide Url",
+      "id": "url"
+    },
+    {
+      "type": "checkbox",
+      "label": "Open Url in new tab",
+      "id": "new_tab",
+      "default": false
+    },
+    {
+      "type": "video",
+      "id": "video",
+      "label": "Video"
+    },
+    {
+      "type": "range",
+      "id": "height_desktop",
+      "label": "Video height (Desktop)",
+      "min": 0,
+      "max": 1000,
+      "step": 10,
+      "default": 450
+    },
+    {
+      "type": "range",
+      "id": "height_mobile",
+      "label": "Video height (Mobile)",
+      "min": 0,
+      "max": 1000,
+      "step": 10,
+      "default": 450
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Overlay color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "Overlay opacity",
+      "min": 0,
+      "max": 100,
+      "step": 10,
+      "default": 30
+    }
+  ],
+  "blocks": [
+    {
+      "type": "@theme"
+    },
+    {
+      "type": "@app"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero Slide"
+    }
+  ]
+}
+{% endschema %}
