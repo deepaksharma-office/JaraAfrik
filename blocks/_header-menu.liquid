@@ -38,6 +38,7 @@
         class="menu-list menu-list--mobile{% if transparent == blank %} color-custom-{{ block.id }}{% endif %}"
         style="--menu-horizontal-gap: 15px; --mobile-nav-margin: auto;"
         data-hydration-key="header-menu-mobile-navigation-bar"
+        data-navigation-bar-enabled
       >
         <div class="menu-list__scroll-container">
           <ul
@@ -94,7 +95,7 @@
     {% capture children %}
       {% for link in block_settings.menu.links %}
         <li
-          class="menu-list__list-item"
+          class="menu-list__list-item{% if menu_content_type == 'text' %} menu-list__list-item--dropdown{% endif %}"
           on:blur="/deactivate"
           on:pointerenter="/activate"
           on:pointerleave="/deactivate"
@@ -120,6 +121,7 @@
               aria-controls="submenu-{{ forloop.index }}"
               aria-expanded="false"
               ref="disclosure[]"
+              data-skip-node-update
               on:click="/toggle"
             >
               <span class="visually-hidden">{{ 'accessibility.show_submenu' | t: title: link.title }}</span>
@@ -137,12 +139,35 @@
               Collapsed by default via `inert`: keeps the submenu out of the tab order
               and the accessibility tree until it is opened. Toggled in header-menu.js.
             {%- endcomment -%}
-            <div class="menu-list__submenu{{ background_color_classes }}" ref="submenu[]" inert>
+            <div class="menu-list__submenu{{ background_color_classes }}" ref="submenu[]" data-skip-node-update inert>
               <div
                 id="submenu-{{ forloop.index }}"
                 class="menu-list__submenu-inner"
                 style="{% render 'submenu-font-styles', settings: block_settings %}"
               >
+                {% if menu_content_type == 'text' %}
+                  <ul class="header-compact-dropdown__list list-unstyled" role="list">
+                    {% for child_link in link.links %}
+                      <li class="header-compact-dropdown__item">
+                        <a href="{{ child_link.url }}" class="header-compact-dropdown__link{% if child_link.active %} header-compact-dropdown__link--active{% endif %}"{% if child_link.current %} aria-current="page"{% endif %}>
+                          <span>{{ child_link.title | escape }}</span>
+                          {% if child_link.links != blank %}
+                            <svg class="header-compact-dropdown__chevron" viewBox="0 0 10 6" aria-hidden="true"><path d="m1 1 4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+                          {% endif %}
+                        </a>
+                        {% if child_link.links != blank %}
+                          <ul class="header-compact-dropdown__nested list-unstyled" role="list">
+                            {% for grandchild_link in child_link.links %}
+                              <li>
+                                <a href="{{ grandchild_link.url }}" class="header-compact-dropdown__link{% if grandchild_link.active %} header-compact-dropdown__link--active{% endif %}"{% if grandchild_link.current %} aria-current="page"{% endif %}>{{ grandchild_link.title | escape }}</a>
+                              </li>
+                            {% endfor %}
+                          </ul>
+                        {% endif %}
+                      </li>
+                    {% endfor %}
+                  </ul>
+                {% else %}
                 {% assign list_id = 'MegaMenuList-' | append: forloop.index %}
                 <div class="mega-menu section section--full-width-margin section--{{ section.settings.section_width }}">
                   <div
@@ -162,6 +187,7 @@
                     %}
                   </div>
                 </div>
+                {% endif %}
               </div>
             </div>
           {%- endif -%}
@@ -181,6 +207,7 @@
           ref="menuitem"
           on:click="/toggle"
           data-testid="header-menu-more-button"
+          data-skip-node-update
         >
           <span class="menu-list__link-title">{{ 'actions.more' | t }}</span>
         </button>
@@ -192,6 +219,7 @@
       class="header-menu"
       {{ block.shopify_attributes }}
       data-hydration-key="header-menu"
+      data-skip-node-update
     >
       <div class="header-menu__inner">
         <nav
@@ -449,6 +477,107 @@
     background-color: transparent !important;
     padding: var(--focus-outline-size);
     margin: calc(-1 * var(--focus-outline-size));
+  }
+
+
+  /* Text-only mode: a contained dropdown directly below its own menu item.
+     Image / featured-content modes retain the original full-width mega menu. */
+  @media screen and (min-width: 750px) {
+    .menu-list__list-item--dropdown:not([slot='overflow']) {
+      position: relative;
+    }
+
+    .menu-list__list-item--dropdown:not([slot='overflow']) > .menu-list__submenu {
+      --submenu-content-opacity: 1;
+      --submenu-padding-block-start: 0px;
+      --submenu-padding-block-end: 0px;
+      position: absolute;
+      inset-inline-start: 0;
+      inset-inline-end: auto;
+      inset-block-start: 100%;
+      top: 100%;
+      left: 0;
+      width: max-content;
+      min-width: 220px;
+      max-width: min(340px, 90vw);
+      padding: 8px 0;
+      margin: 0;
+      background: var(--color-background, #fff);
+      border: 1px solid rgb(var(--color-foreground-rgb) / 0.12);
+      border-radius: 4px;
+      box-shadow: var(--shadow-popover, 0 8px 24px rgb(0 0 0 / 0.12));
+      clip-path: none;
+      transform: none;
+      transition: opacity 160ms ease, visibility 160ms ease;
+      opacity: 0;
+      z-index: calc(var(--layer-header-menu, 10) + 1);
+    }
+
+    .menu-list__list-item--dropdown:not([slot='overflow']):has([aria-expanded='true']) > .menu-list__submenu,
+    .menu-list__list-item--dropdown:not([slot='overflow']) > .menu-list__submenu:hover,
+    .menu-list__list-item--dropdown:not([slot='overflow']):focus-within > .menu-list__submenu {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    .menu-list__list-item--dropdown:not([slot='overflow']) > .menu-list__submenu > .menu-list__submenu-inner {
+      display: block;
+      padding: 0;
+      margin: 0;
+      opacity: 1;
+      transform: none;
+      overflow: visible;
+      max-height: min(70vh, 620px);
+      overflow-y: auto;
+    }
+
+    .header-compact-dropdown__list,
+    .header-compact-dropdown__nested {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .header-compact-dropdown__item { position: relative; white-space: normal; }
+    .header-compact-dropdown__link {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      width: 100%;
+      padding: 10px 18px;
+      color: var(--menu-child-font-color, var(--color-foreground));
+      font-family: var(--menu-child-font-family);
+      font-weight: var(--menu-child-font-weight);
+      font-size: var(--menu-child-font-size);
+      line-height: 1.4;
+      text-decoration: none;
+      white-space: normal;
+    }
+    .header-compact-dropdown__link:hover,
+    .header-compact-dropdown__link:focus-visible,
+    .header-compact-dropdown__link--active {
+      color: var(--menu-child-active-font-color, var(--color-foreground));
+      background: rgb(var(--color-foreground-rgb) / 0.06);
+    }
+    .header-compact-dropdown__chevron { width: 10px; min-width: 10px; transform: rotate(-90deg); }
+    .header-compact-dropdown__nested { padding-inline-start: 12px; padding-block-end: 4px; }
+    .header-compact-dropdown__nested .header-compact-dropdown__link { padding-block: 7px; }
+
+    /* Overflow ('More') uses the theme's original overlay positioning. */
+    .menu-list__list-item[slot='overflow'] .header-compact-dropdown__list {
+      padding: 0;
+    }
+    .menu-list__list-item[slot='overflow'] .header-compact-dropdown__link {
+      padding-block: 8px;
+    }
+
+    /* No full-width header underlay for a compact dropdown. */
+    #header-component:has(.menu-list__list-item--dropdown:not([slot='overflow']) > .menu-list__submenu:hover) .header__underlay-open,
+    #header-component:has(.menu-list__list-item--dropdown:not([slot='overflow']) > .menu-list__submenu:not([inert])) .header__underlay-open {
+      height: var(--header-height);
+      box-shadow: none;
+    }
   }
 
   /** mega menu **/

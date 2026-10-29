@@ -5,3 +5,24 @@
 .group_shadow {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
 }
+
+.menu-list__link-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.menu-list__chevron {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  transition: transform 0.25s ease;
+}
+
+.menu-list__link:hover .menu-list__chevron {
+  transform: rotate(180deg);
+}
+
+.forced_row_mobile{
+          flex-direction: row !important;
+}

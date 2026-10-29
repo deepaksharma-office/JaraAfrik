@@ -12,7 +12,6 @@
   @example
   {% render 'group', children: children, settings: block.settings, shopify_attributes: block.shopify_attributes %}
 {%- enddoc -%}
-
 {% liquid
   assign skip_contrast = false
   if settings.background_media != blank and settings.background_media != 'none'
@@ -69,6 +68,8 @@
   <div
     class="
       group-block-content
+      {% if settings.forced_row %}forced_row_mobile{% endif %}
+       {{ settings.forced_row }}
       {% if request.design_mode %}group-block-content--design-mode{% endif %}
       layout-panel-flex
       layout-panel-flex--{{ settings.content_direction | default: 'column' }}

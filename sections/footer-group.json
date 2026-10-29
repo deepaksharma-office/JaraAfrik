@@ -11,6 +11,102 @@
   "type": "footer",
   "name": "t:names.footer",
   "sections": {
+    "jara_afrik_footer_bwgBgh": {
+      "type": "jara-afrik-footer",
+      "blocks": {
+        "menu_nJAKkL": {
+          "type": "menu",
+          "settings": {
+            "heading": "Customer Care",
+            "menu": "customer-care",
+            "open_on_mobile": false
+          }
+        },
+        "menu_xArVhy": {
+          "type": "menu",
+          "settings": {
+            "heading": "About Jara Afrik",
+            "menu": "new-menu",
+            "open_on_mobile": false
+          }
+        },
+        "menu_arLzye": {
+          "type": "menu",
+          "settings": {
+            "heading": "Shop",
+            "menu": "shop",
+            "open_on_mobile": false
+          }
+        },
+        "social_Cnjhmn": {
+          "type": "social",
+          "settings": {
+            "heading": "Stay Connected",
+            "instagram_url": "shopify://products/antique-drawers",
+            "facebook_url": "shopify://products/biodegradable-cardboard-pots",
+            "tiktok_url": "shopify://collections/best-sellers",
+            "youtube_url": "",
+            "pinterest_url": "",
+            "custom_url": "",
+            "custom_label": "Follow us"
+          }
+        },
+        "icon_text_f7c3wR": {
+          "type": "icon_text",
+          "settings": {
+            "text": "<p>Currently shipping within Canada only.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "menu_nJAKkL",
+        "menu_xArVhy",
+        "menu_arLzye",
+        "social_Cnjhmn",
+        "icon_text_f7c3wR"
+      ],
+      "name": "Jara Afrik custom footer",
+      "settings": {
+        "show_newsletter": true,
+        "newsletter_overlay_color": "#073519",
+        "newsletter_overlay_opacity": 35,
+        "newsletter_text_color": "#ffffff",
+        "newsletter_heading": "Join the Jara Afrik Community",
+        "newsletter_description": "<p>Be the first to know about new arrivals, special offers and more.</p>",
+        "newsletter_title_size": 36,
+        "newsletter_mobile_title_size": 27,
+        "email_placeholder": "Email address",
+        "newsletter_button": "Sign Up",
+        "newsletter_disclaimer": "We respect your privacy. Unsubscribe at any time.",
+        "success_message": "Thank you for subscribing!",
+        "input_background_color": "#fffaf0",
+        "input_text_color": "#152519",
+        "input_placeholder_color": "#777777",
+        "button_background_color": "#103d24",
+        "button_text_color": "#ffffff",
+        "input_radius": 18,
+        "background_color": "#f9f3e8",
+        "mobile_background_color": "#faf4e9",
+        "text_color": "#121c17",
+        "accent_color": "#103922",
+        "divider_color": "#90a199",
+        "content_width": 1280,
+        "desktop_columns": "4",
+        "padding_top": 36,
+        "padding_bottom": 26,
+        "menu_heading_size": 16,
+        "menu_link_size": 16,
+        "single_accordion": true,
+        "social_icon_size": 38,
+        "logo": "shopify://shop_images/image_4_2.png",
+        "logo_width": 230,
+        "mobile_logo_width": 220,
+        "show_mobile_brand": true,
+        "brand_tagline": "A little extra from home.",
+        "copyright_text": "Jara Afrik. All rights reserved.",
+        "legal_menu": "policies"
+      }
+    },
     "footer_m9NzUG": {
       "type": "footer",
       "blocks": {
@@ -39,6 +135,7 @@
             "overlay_color": "#00000026",
             "overlay_style": "solid",
             "gradient_direction": "to top",
+            "shadow": false,
             "border": "none",
             "border_width": 1,
             "border_opacity": 100,
@@ -128,6 +225,7 @@
                 "overlay_color": "#00000026",
                 "overlay_style": "solid",
                 "gradient_direction": "to top",
+                "shadow": false,
                 "border": "none",
                 "border_width": 1,
                 "border_opacity": 100,
@@ -283,6 +381,7 @@
             "overlay_color": "#00000026",
             "overlay_style": "solid",
             "gradient_direction": "to top",
+            "shadow": false,
             "border": "none",
             "border_width": 1,
             "border_opacity": 100,
@@ -349,6 +448,7 @@
                 "overlay_color": "#00000026",
                 "overlay_style": "solid",
                 "gradient_direction": "to top",
+                "shadow": false,
                 "border": "none",
                 "border_width": 1,
                 "border_opacity": 100,
@@ -407,72 +507,11 @@
                 "icon_ECbfyM",
                 "text_a9nybe"
               ]
-            },
-            "text_JiX6jy": {
-              "type": "text",
-              "name": "t:names.heading",
-              "settings": {
-                "text": "<p>Contact</p>",
-                "width": "fit-content",
-                "max_width": "normal",
-                "alignment": "left",
-                "type_preset": "h4",
-                "font": "var(--font-body--family)",
-                "font_size": "1rem",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "wrap": "pretty",
-                "text_color": "",
-                "background": false,
-                "background_color": "#00000026",
-                "corner_radius": 0,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            },
-            "email_signup_8UFRfe": {
-              "type": "email-signup",
-              "name": "t:names.email_signup",
-              "settings": {
-                "width": "fill",
-                "custom_width": 100,
-                "heading": "",
-                "heading_text_color": "",
-                "heading_preset": "h3",
-                "border_style": "all",
-                "input_style": "default",
-                "border_width": 1,
-                "border_radius": 100,
-                "input_background_color": "",
-                "input_text_color": "",
-                "input_border_color": "",
-                "input_type_preset": "paragraph",
-                "style_class": "button",
-                "custom_button_background": "{{ settings.color_palette.foreground }}",
-                "custom_button_text": "{{ settings.color_palette.background }}",
-                "custom_button_border": "{{ settings.color_palette.background }}",
-                "link_text_color": "",
-                "display_type": "text",
-                "label": "Go",
-                "integrated_button": false,
-                "button_type_preset": "paragraph",
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
             }
           },
           "block_order": [
             "text_pe7PCe",
-            "group_7DMwVY",
-            "text_JiX6jy",
-            "email_signup_8UFRfe"
+            "group_7DMwVY"
           ]
         }
       },
@@ -482,6 +521,7 @@
         "menu_zM9tNt",
         "group_tXmE4K"
       ],
+      "disabled": true,
       "name": "t:names.footer",
       "settings": {
         "section_width": "page-width",
@@ -539,6 +579,7 @@
         "footer_policy_list_VCdnpa",
         "social_links_Ew63Kq"
       ],
+      "disabled": true,
       "name": "t:names.utilities",
       "settings": {
         "section_width": "page-width",
@@ -552,6 +593,7 @@
     }
   },
   "order": [
+    "jara_afrik_footer_bwgBgh",
     "footer_m9NzUG",
     "footer_utilities_jLGE8U"
   ]

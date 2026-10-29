@@ -1,0 +1,395 @@
+{% comment %}
+  Jara Afrik responsive footer — single-file Shopify section.
+  Save as sections/jara-afrik-footer.liquid.
+  Remove or hide your theme's existing footer to avoid duplication.
+{% endcomment %}
+
+{% liquid
+  assign footer_id = 'jara-footer-' | append: section.id
+  assign newsletter_form_id = 'JaraFooterNewsletter-' | append: section.id
+%}
+
+<footer id="{{ footer_id }}" class="jf" style="
+  --jf-bg: {{ section.settings.background_color }};
+  --jf-ink: {{ section.settings.text_color }};
+  --jf-green: {{ section.settings.accent_color }};
+  --jf-line: {{ section.settings.divider_color }};
+  --jf-nl-overlay: {{ section.settings.newsletter_overlay_color }};
+  --jf-nl-opacity: {{ section.settings.newsletter_overlay_opacity | divided_by: 100.0 }};
+  --jf-width: {{ section.settings.content_width }}px;
+  --jf-space-top: {{ section.settings.padding_top }}px;
+  --jf-space-bottom: {{ section.settings.padding_bottom }}px;
+  --jf-heading-size: {{ section.settings.menu_heading_size }}px;
+  --jf-link-size: {{ section.settings.menu_link_size }}px;
+  --jf-nl-title-size: {{ section.settings.newsletter_title_size }}px;
+  --jf-nl-mobile-title-size: {{ section.settings.newsletter_mobile_title_size }}px;
+  --jf-mobile-bg: {{ section.settings.mobile_background_color }};
+  --jf-radius: {{ section.settings.input_radius }}px;
+  --jf-social-size: {{ section.settings.social_icon_size }}px;
+">
+  {% if section.settings.show_newsletter %}
+    <div class="jf__newsletter" {% if section.settings.newsletter_background != blank %}style="--jf-nl-image: url('{{ section.settings.newsletter_background | image_url: width: 2400 }}');"{% endif %}>
+      <div class="jf__newsletter-overlay" aria-hidden="true"></div>
+      <div class="jf__newsletter-inner">
+        {% if section.settings.newsletter_heading != blank %}
+          <h2 class="jf__newsletter-heading">{{ section.settings.newsletter_heading | escape }}</h2>
+        {% endif %}
+        {% if section.settings.newsletter_description != blank %}
+          <div class="jf__newsletter-description">{{ section.settings.newsletter_description }}</div>
+        {% endif %}
+        {% form 'customer', id: newsletter_form_id, class: 'jf__newsletter-form' %}
+          <input type="hidden" name="contact[tags]" value="newsletter">
+          <div class="jf__form-line">
+            <label class="jf__email-field" for="JaraEmail-{{ section.id }}">
+              <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="4.5" width="19" height="15" rx="1.5"/><path d="m3.5 6 8.5 7 8.5-7"/></svg>
+              <span class="visually-hidden">{{ section.settings.email_placeholder | escape }}</span>
+              <input id="JaraEmail-{{ section.id }}" name="contact[email]" type="email" autocomplete="email" placeholder="{{ section.settings.email_placeholder | escape }}" value="{{ form.email | escape }}" required {% if form.errors %}aria-invalid="true" aria-describedby="JaraFormStatus-{{ section.id }}"{% endif %}>
+            </label>
+            <button type="submit" class="jf__submit">{{ section.settings.newsletter_button | escape }}</button>
+          </div>
+          {% if form.posted_successfully? %}
+            <p class="jf__form-message" id="JaraFormStatus-{{ section.id }}" role="status">{{ section.settings.success_message | escape }}</p>
+          {% elsif form.errors %}
+            <p class="jf__form-message jf__form-message--error" id="JaraFormStatus-{{ section.id }}" role="alert">{{ form.errors | default_errors }}</p>
+          {% endif %}
+        {% endform %}
+        {% if section.settings.newsletter_disclaimer != blank %}
+          <p class="jf__disclaimer">{{ section.settings.newsletter_disclaimer | escape }}</p>
+        {% endif %}
+      </div>
+    </div>
+  {% endif %}
+
+  <div class="jf__base">
+    <div class="jf__container">
+      <div class="jf__columns">
+        {% for block in section.blocks %}
+          {% case block.type %}
+            {% when 'menu' %}
+              <div class="jf__menu-block jf__column" {{ block.shopify_attributes }}>
+                <details class="jf__menu-details" {% if block.settings.open_on_mobile %}open data-default-open{% endif %}>
+                  <summary class="jf__menu-heading">
+                    <span>{{ block.settings.heading | escape }}</span>
+                    <svg class="jf__plus" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M12 4v16M4 12h16"/></svg>
+                  </summary>
+                  <div class="jf__menu-inner">
+                    {% if block.settings.menu != blank %}
+                      <ul class="jf__links" role="list">
+                        {% for link in block.settings.menu.links %}
+                          <li><a href="{{ link.url }}" {% if link.current %}aria-current="page"{% endif %}>{{ link.title | escape }}</a></li>
+                        {% endfor %}
+                      </ul>
+                    {% elsif request.design_mode %}
+                      <p class="jf__editor-note">Choose a navigation menu in this block's settings.</p>
+                    {% endif %}
+                  </div>
+                </details>
+              </div>
+            {% when 'social' %}
+              <div class="jf__column jf__social-block" {{ block.shopify_attributes }}>
+                {% if block.settings.heading != blank %}<h3 class="jf__column-title">{{ block.settings.heading | escape }}</h3>{% endif %}
+                <div class="jf__social-icons">
+                  {% if block.settings.instagram_url != blank %}
+                    <a href="{{ block.settings.instagram_url }}" aria-label="Instagram" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4.3"/><circle cx="18" cy="6" r="1" fill="currentColor" stroke="none"/></svg></a>
+                  {% endif %}
+                  {% if block.settings.facebook_url != blank %}
+                    <a href="{{ block.settings.facebook_url }}" aria-label="Facebook" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M22 12a10 10 0 1 0-11.56 9.88v-6.99H7.9V12h2.54V9.8c0-2.5 1.49-3.9 3.78-3.9 1.1 0 2.25.2 2.25.2v2.47H15.2c-1.24 0-1.63.77-1.63 1.56V12h2.77l-.45 2.89h-2.32v6.99A10 10 0 0 0 22 12Z"/></svg></a>
+                  {% endif %}
+                  {% if block.settings.tiktok_url != blank %}
+                    <a href="{{ block.settings.tiktok_url }}" aria-label="TikTok" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.7 2h-3.2v13.15a3.12 3.12 0 1 1-2.7-3.1V8.8A6.4 6.4 0 1 0 16.7 15V8.3a8.4 8.4 0 0 0 5.1 1.65V6.7A5.15 5.15 0 0 1 16.7 2Z"/></svg></a>
+                  {% endif %}
+                  {% if block.settings.youtube_url != blank %}
+                    <a href="{{ block.settings.youtube_url }}" aria-label="YouTube" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.8 7a2.8 2.8 0 0 0-2-2C18 4.5 12 4.5 12 4.5s-6 0-7.8.5a2.8 2.8 0 0 0-2 2A29 29 0 0 0 1.7 12a29 29 0 0 0 .5 5 2.8 2.8 0 0 0 2 2c1.8.5 7.8.5 7.8.5s6 0 7.8-.5a2.8 2.8 0 0 0 2-2 29 29 0 0 0 .5-5 29 29 0 0 0-.5-5ZM10 15.5v-7l6 3.5-6 3.5Z"/></svg></a>
+                  {% endif %}
+                  {% if block.settings.pinterest_url != blank %}
+                    <a href="{{ block.settings.pinterest_url }}" aria-label="Pinterest" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-3.64 19.31c-.03-.77 0-1.69.19-2.53l1.29-5.47s-.32-.64-.32-1.59c0-1.49.86-2.6 1.94-2.6.92 0 1.36.69 1.36 1.52 0 .93-.59 2.32-.89 3.61-.26 1.08.54 1.96 1.6 1.96 1.92 0 3.39-2.02 3.39-4.94 0-2.58-1.85-4.39-4.48-4.39-3.05 0-4.84 2.28-4.84 4.64 0 .92.35 1.91.79 2.45.09.11.1.21.07.32l-.3 1.23c-.05.2-.16.24-.37.15-1.38-.65-2.24-2.69-2.24-4.32 0-3.52 2.56-6.75 7.38-6.75 3.88 0 6.89 2.77 6.89 6.47 0 3.86-2.43 6.97-5.79 6.97-1.13 0-2.19-.58-2.55-1.26l-.69 2.62c-.25.96-.93 2.17-1.38 2.91A10 10 0 1 0 12 2Z"/></svg></a>
+                  {% endif %}
+                  {% if block.settings.custom_url != blank and block.settings.custom_icon != blank %}
+                    <a href="{{ block.settings.custom_url }}" aria-label="{{ block.settings.custom_label | default: 'Social link' | escape }}" target="_blank" rel="noopener noreferrer">{{ block.settings.custom_icon | image_url: width: 120 | image_tag: loading: 'lazy', alt: block.settings.custom_label, class: 'jf__social-custom' }}</a>
+                  {% endif %}
+                </div>
+              </div>
+            {% when 'icon_text' %}
+              <div class="jf__column jf__icon-text-block" {{ block.shopify_attributes }}>
+                <div class="jf__icon-text">
+                  {% if block.settings.icon != blank %}
+                    {{ block.settings.icon | image_url: width: 120 | image_tag: loading: 'lazy', class: 'jf__info-icon', alt: '' }}
+                  {% else %}
+                    <svg class="jf__info-icon" viewBox="0 0 48 35" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 5h27v23H2zM29 12h8l8 9v7H29zM36 12v9h9"/><circle cx="11" cy="29" r="4" fill="var(--jf-bg)"/><circle cx="36" cy="29" r="4" fill="var(--jf-bg)"/></svg>
+                  {% endif %}
+                  <div class="jf__icon-description">{{ block.settings.text }}</div>
+                </div>
+              </div>
+            {% when 'custom_text' %}
+              <div class="jf__column jf__text-block" {{ block.shopify_attributes }}>
+                {% if block.settings.heading != blank %}<h3 class="jf__column-title">{{ block.settings.heading | escape }}</h3>{% endif %}
+                <div class="jf__richtext">{{ block.settings.text }}</div>
+              </div>
+          {% endcase %}
+        {% endfor %}
+      </div>
+
+      {% if section.settings.show_mobile_brand %}
+        <div class="jf__mobile-brand">
+          {% if section.settings.logo != blank %}
+            {% assign mobile_logo_alt = section.settings.logo.alt | default: shop.name %}
+            <a href="{{ routes.root_url }}" class="jf__brand-logo">{{ section.settings.logo | image_url: width: 700 | image_tag: loading: 'lazy', alt: mobile_logo_alt, widths: '200,300,450,700' }}</a>
+          {% else %}
+            <a href="{{ routes.root_url }}" class="jf__brand-name">{{ shop.name | escape }}</a>
+          {% endif %}
+          {% if section.settings.brand_tagline != blank %}<p class="jf__tagline">{{ section.settings.brand_tagline | escape }}</p>{% endif %}
+          <div class="jf__mobile-extras"></div>
+        </div>
+      {% endif %}
+
+      <div class="jf__bottom">
+        <div class="jf__desktop-brand">
+          {% if section.settings.logo != blank %}
+            {% assign desktop_logo_alt = section.settings.logo.alt | default: shop.name %}
+            <a href="{{ routes.root_url }}" class="jf__brand-logo">{{ section.settings.logo | image_url: width: 700 | image_tag: loading: 'lazy', alt: desktop_logo_alt, widths: '200,300,450,700' }}</a>
+          {% else %}
+            <a href="{{ routes.root_url }}" class="jf__brand-name">{{ shop.name | escape }}</a>
+          {% endif %}
+          {% if section.settings.brand_tagline != blank %}<p class="jf__tagline">{{ section.settings.brand_tagline | escape }}</p>{% endif %}
+        </div>
+        <div class="jf__legal">
+          {% if section.settings.copyright_text != blank %}
+            <p class="jf__copyright">© {{ 'now' | date: '%Y' }} {{ section.settings.copyright_text | escape }}</p>
+          {% else %}
+            <p class="jf__copyright">© {{ 'now' | date: '%Y' }} {{ shop.name | escape }}. All rights reserved.</p>
+          {% endif %}
+          {% if section.settings.legal_menu != blank %}
+            <ul class="jf__legal-links" role="list">
+              {% for link in section.settings.legal_menu.links %}
+                <li><a href="{{ link.url }}">{{ link.title | escape }}</a></li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<style>
+  #{{ footer_id }} {width:100%;background:var(--jf-bg);color:var(--jf-ink);font-family:var(--font-body-family,Arial,sans-serif);font-size:16px;line-height:1.5}
+  #{{ footer_id }} *,#{{ footer_id }} *::before,#{{ footer_id }} *::after{box-sizing:border-box}
+  #{{ footer_id }} a{color:inherit;text-decoration:none}
+  #{{ footer_id }} a:hover{text-decoration:underline;text-underline-offset:3px}
+  #{{ footer_id }} p,#{{ footer_id }} h2,#{{ footer_id }} h3{margin:0}
+  #{{ footer_id }} .visually-hidden{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
+  #{{ footer_id }} .jf__newsletter{position:relative;isolation:isolate;background-color:var(--jf-green);background-image:var(--jf-nl-image,none);background-position:center;background-size:cover;color:{{ section.settings.newsletter_text_color }};padding:45px 22px 29px;text-align:center;overflow:hidden}
+  #{{ footer_id }} .jf__newsletter-overlay{position:absolute;inset:0;z-index:-1;background:var(--jf-nl-overlay);opacity:var(--jf-nl-opacity)}
+  #{{ footer_id }} .jf__newsletter-inner{max-width:900px;margin:auto;position:relative}
+  #{{ footer_id }} .jf__newsletter-heading{font-family:var(--font-heading-family,Georgia,serif);font-weight:600;font-size:var(--jf-nl-title-size);line-height:1.2;color:inherit;letter-spacing:-.025em}
+  #{{ footer_id }} .jf__newsletter-description{margin:12px auto 21px;font-size:16px;line-height:1.5}
+  #{{ footer_id }} .jf__newsletter-description p{margin:0}
+  #{{ footer_id }} .jf__newsletter-form{max-width:590px;margin:0 auto}
+  #{{ footer_id }} .jf__form-line{display:flex;width:100%;min-height:54px;padding:3px;background:{{ section.settings.input_background_color }};border-radius:var(--jf-radius);align-items:stretch;overflow:hidden}
+  #{{ footer_id }} .jf__email-field{display:flex;align-items:center;gap:14px;padding:0 17px;flex:1;min-width:0;color:{{ section.settings.input_text_color }};cursor:text}
+  #{{ footer_id }} .jf__email-field svg{flex-shrink:0}
+  #{{ footer_id }} .jf__email-field input{display:block;flex:1;min-width:0;width:100%;background:transparent!important;border:0!important;outline:none!important;box-shadow:none!important;color:{{ section.settings.input_text_color }}!important;font:inherit;font-size:15px;padding:8px 0}
+  #{{ footer_id }} .jf__email-field input::placeholder{color:{{ section.settings.input_placeholder_color }};opacity:1}
+  #{{ footer_id }} .jf__submit{appearance:none;cursor:pointer;border:0;border-radius:calc(var(--jf-radius) - 3px);background:{{ section.settings.button_background_color }};color:{{ section.settings.button_text_color }};font:inherit;font-size:16px;padding:0 32px;white-space:nowrap;transition:filter .2s ease}
+  #{{ footer_id }} .jf__submit:hover{filter:brightness(1.15)}
+  #{{ footer_id }} .jf__submit:focus-visible,#{{ footer_id }} a:focus-visible,#{{ footer_id }} summary:focus-visible{outline:2px solid currentColor;outline-offset:4px}
+  #{{ footer_id }} .jf__disclaimer{font-size:13px;margin-top:12px}
+  #{{ footer_id }} .jf__form-message{margin:9px 0 0;font-size:14px}
+  #{{ footer_id }} .jf__form-message--error{color:#ffdbdb}
+  #{{ footer_id }} .jf__base{background:var(--jf-bg);padding:var(--jf-space-top) 22px var(--jf-space-bottom)}
+  #{{ footer_id }} .jf__container{max-width:var(--jf-width);margin:0 auto}
+  #{{ footer_id }} .jf__columns{display:grid;grid-template-columns:repeat({{ section.settings.desktop_columns }},minmax(0,1fr));column-gap:35px;row-gap:30px;padding-bottom:35px}
+  #{{ footer_id }} .jf__column{min-width:0}
+  /* Keep social links and the shipping note together in the right-hand column. */
+  @media(min-width:750px){
+    #{{ footer_id }} .jf__social-block{grid-column:{{ section.settings.desktop_columns }};grid-row:1;align-self:start}
+    #{{ footer_id }} .jf__icon-text-block{grid-column:{{ section.settings.desktop_columns }};grid-row:1;align-self:start;margin-top:126px}
+  }
+  #{{ footer_id }} .jf__menu-details{display:block}
+  #{{ footer_id }} .jf__menu-heading,#{{ footer_id }} .jf__column-title{display:block;list-style:none;font-size:var(--jf-heading-size);font-weight:700;letter-spacing:.015em;line-height:1.3;text-transform:uppercase;color:var(--jf-green);margin:0 0 20px;padding:0}
+  #{{ footer_id }} .jf__menu-heading::-webkit-details-marker{display:none}
+  #{{ footer_id }} .jf__menu-heading::after,#{{ footer_id }} .jf__column-title::after{content:'';display:block;height:1px;width:32px;background:var(--jf-line);margin-top:12px}
+  #{{ footer_id }} .jf__plus{display:none}
+  #{{ footer_id }} .jf__links{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:9px}
+  #{{ footer_id }} .jf__links a{font-size:var(--jf-link-size);line-height:1.45}
+  #{{ footer_id }} .jf__editor-note{color:var(--jf-ink);font-size:12px;opacity:.75}
+  #{{ footer_id }} .jf__social-icons{display:flex;align-items:center;gap:22px;flex-wrap:wrap}
+  #{{ footer_id }} .jf__social-icons a{width:var(--jf-social-size);height:var(--jf-social-size);display:flex;align-items:center;justify-content:center;color:var(--jf-green)}
+  #{{ footer_id }} .jf__social-icons svg,#{{ footer_id }} .jf__social-custom{width:100%;height:100%;object-fit:contain;display:block}
+  #{{ footer_id }} .jf__icon-text{display:flex;align-items:center;gap:12px}
+  #{{ footer_id }} .jf__info-icon{display:block;flex:0 0 39px;width:39px;height:35px;object-fit:contain;color:var(--jf-green)}
+  #{{ footer_id }} .jf__icon-description{font-size:var(--jf-link-size);line-height:1.45}
+  #{{ footer_id }} .jf__icon-description p{margin:0}
+  #{{ footer_id }} .jf__richtext{font-size:var(--jf-link-size)}
+  #{{ footer_id }} .jf__bottom{border-top:1px solid var(--jf-line);padding-top:23px;display:flex;align-items:center;justify-content:space-between;gap:30px}
+  #{{ footer_id }} .jf__desktop-brand{text-align:center;flex:0 0 auto}
+  #{{ footer_id }} .jf__brand-logo{display:inline-block;max-width:100%}
+  #{{ footer_id }} .jf__brand-logo img{display:block;width:{{ section.settings.logo_width }}px;max-width:100%;height:auto}
+  #{{ footer_id }} .jf__brand-name{display:inline-block;font:700 28px var(--font-heading-family,Georgia,serif);color:var(--jf-green)}
+  #{{ footer_id }} .jf__tagline{font-family:Georgia,serif;font-style:italic;font-size:17px;letter-spacing:.02em;text-align:center}
+  #{{ footer_id }} .jf__legal{text-align:right;margin-left:auto;font-size:14px}
+  #{{ footer_id }} .jf__copyright{margin-bottom:12px}
+  #{{ footer_id }} .jf__legal-links{margin:0;padding:0;list-style:none;display:flex;justify-content:flex-end;gap:0;flex-wrap:wrap}
+  #{{ footer_id }} .jf__legal-links li+li::before{content:'|';display:inline-block;margin:0 13px;color:var(--jf-green)}
+  #{{ footer_id }} .jf__mobile-brand{display:none}
+  @media(min-width:750px){#{{ footer_id }} .jf__menu-details>.jf__menu-inner{display:block!important}#{{ footer_id }} .jf__menu-details>.jf__menu-heading{pointer-events:none;cursor:default}}
+  @media(max-width:749px){
+    #{{ footer_id }} .jf__newsletter{padding:23px 17px 21px}
+    #{{ footer_id }} .jf__newsletter-heading{font-size:var(--jf-nl-mobile-title-size)}
+    #{{ footer_id }} .jf__newsletter-description{font-size:15px;max-width:345px;margin:7px auto 13px}
+    #{{ footer_id }} .jf__form-line{min-height:52px}
+    #{{ footer_id }} .jf__email-field{gap:11px;padding:0 13px}
+    #{{ footer_id }} .jf__email-field input{font-size:14px}
+    #{{ footer_id }} .jf__submit{padding:0 18px;font-size:14px}
+    #{{ footer_id }} .jf__disclaimer{font-size:12px;margin-top:10px}
+    #{{ footer_id }} .jf__base{background:var(--jf-mobile-bg);padding:0 24px 24px}
+    #{{ footer_id }} .jf__columns{display:flex;flex-direction:column;gap:0;padding:0}
+    #{{ footer_id }} .jf__menu-block{border-bottom:1px solid var(--jf-line)}
+    #{{ footer_id }} .jf__menu-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:20px 0;margin:0;cursor:pointer;font-size:var(--jf-heading-size)}
+    #{{ footer_id }} .jf__menu-heading::after,#{{ footer_id }} .jf__column-title::after{display:none}
+    #{{ footer_id }} .jf__plus{display:block;flex-shrink:0;transition:transform .25s ease}
+    #{{ footer_id }} .jf__menu-details[open] .jf__plus{transform:rotate(45deg)}
+    #{{ footer_id }} .jf__menu-inner{padding:0 0 20px}
+    #{{ footer_id }} .jf__links{gap:12px}
+    #{{ footer_id }} .jf__social-block,#{{ footer_id }} .jf__icon-text-block{display:none}
+    #{{ footer_id }} .jf__text-block{padding:18px 0}
+    #{{ footer_id }} .jf__mobile-brand{display:flex;align-items:center;flex-direction:column;text-align:center;padding-top:24px}
+    #{{ footer_id }} .jf__mobile-brand .jf__brand-logo img{width:{{ section.settings.mobile_logo_width }}px}
+    #{{ footer_id }} .jf__mobile-brand .jf__tagline{font-size:15px;margin-top:0}
+    #{{ footer_id }} .jf__mobile-extras{display:flex;flex-direction:column;align-items:center;gap:20px;width:100%;margin:17px 0 18px}
+    #{{ footer_id }} .jf__mobile-extras .jf__social-icons{justify-content:center;gap:24px}
+    #{{ footer_id }} .jf__mobile-extras .jf__icon-text{justify-content:center;max-width:350px}
+    #{{ footer_id }} .jf__bottom{padding-top:18px;display:block;text-align:center}
+    #{{ footer_id }} .jf__desktop-brand{display:none}
+    #{{ footer_id }} .jf__legal{text-align:center;font-size:12px;margin:0}
+    #{{ footer_id }} .jf__copyright{margin-bottom:8px}
+    #{{ footer_id }} .jf__legal-links{justify-content:center;row-gap:5px}
+    #{{ footer_id }} .jf__legal-links li+li::before{margin:0 9px}
+  }
+  @media(max-width:370px){#{{ footer_id }} .jf__base{padding-left:17px;padding-right:17px}#{{ footer_id }} .jf__submit{padding:0 12px}#{{ footer_id }} .jf__email-field{padding:0 9px;gap:8px}}
+  @media(prefers-reduced-motion:reduce){#{{ footer_id }} .jf__plus,#{{ footer_id }} .jf__submit{transition:none}}
+</style>
+
+<script>
+(function(){
+  const root = document.getElementById({{ footer_id | json }});
+  if (!root || root.dataset.jfReady === 'true') return;
+  root.dataset.jfReady = 'true';
+  const mq = window.matchMedia('(max-width: 749px)');
+  const accordions = Array.from(root.querySelectorAll('.jf__menu-details'));
+  let wasMobile = null;
+  const sync = () => {
+    if (mq.matches === wasMobile) return;
+    wasMobile = mq.matches;
+    accordions.forEach((details) => {
+      if (mq.matches) details.open = details.hasAttribute('data-default-open');
+      else details.open = true;
+    });
+  };
+  sync();
+  if (mq.addEventListener) mq.addEventListener('change', sync);
+  else mq.addListener(sync);
+  accordions.forEach((details) => details.addEventListener('toggle', () => {
+    if (!mq.matches || !details.open || !{{ section.settings.single_accordion | json }}) return;
+    accordions.forEach((other) => { if (other !== details) other.open = false; });
+  }));
+  const extras = root.querySelector('.jf__mobile-extras');
+  if (extras) {
+    root.querySelectorAll('.jf__social-block, .jf__icon-text-block').forEach(block => {
+      const clone = block.cloneNode(true);
+      clone.classList.remove('jf__column', 'jf__social-block', 'jf__icon-text-block');
+      clone.removeAttribute('id');
+      clone.removeAttribute('data-shopify-editor-block');
+      clone.querySelectorAll('[id]').forEach(node => node.removeAttribute('id'));
+      const heading = clone.querySelector('.jf__column-title');
+      if (heading) heading.remove();
+      extras.appendChild(clone);
+    });
+  }
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Jara Afrik custom footer",
+  "tag": "section",
+  "class": "jara-afrik-footer-section",
+  "settings": [
+    {"type":"header","content":"Newsletter banner"},
+    {"type":"checkbox","id":"show_newsletter","label":"Show newsletter banner","default":true},
+    {"type":"image_picker","id":"newsletter_background","label":"Newsletter background image"},
+    {"type":"color","id":"newsletter_overlay_color","label":"Image overlay color","default":"#073519"},
+    {"type":"range","id":"newsletter_overlay_opacity","label":"Image overlay opacity","min":0,"max":100,"step":5,"unit":"%","default":35},
+    {"type":"color","id":"newsletter_text_color","label":"Newsletter text color","default":"#ffffff"},
+    {"type":"text","id":"newsletter_heading","label":"Heading","default":"Join the Jara Afrik Community"},
+    {"type":"richtext","id":"newsletter_description","label":"Description","default":"<p>Be the first to know about new arrivals, special offers and more.</p>"},
+    {"type":"range","id":"newsletter_title_size","label":"Desktop heading size","min":20,"max":56,"step":1,"unit":"px","default":36},
+    {"type":"range","id":"newsletter_mobile_title_size","label":"Mobile heading size","min":18,"max":38,"step":1,"unit":"px","default":27},
+    {"type":"text","id":"email_placeholder","label":"Email placeholder","default":"Email address"},
+    {"type":"text","id":"newsletter_button","label":"Button text","default":"Sign Up"},
+    {"type":"text","id":"newsletter_disclaimer","label":"Privacy message","default":"We respect your privacy. Unsubscribe at any time."},
+    {"type":"text","id":"success_message","label":"Subscription success message","default":"Thank you for subscribing!"},
+    {"type":"color","id":"input_background_color","label":"Email field background","default":"#fffaf0"},
+    {"type":"color","id":"input_text_color","label":"Email field text","default":"#152519"},
+    {"type":"color","id":"input_placeholder_color","label":"Email placeholder color","default":"#777777"},
+    {"type":"color","id":"button_background_color","label":"Button background","default":"#103d24"},
+    {"type":"color","id":"button_text_color","label":"Button text color","default":"#ffffff"},
+    {"type":"range","id":"input_radius","label":"Email form corner radius","min":0,"max":32,"step":1,"unit":"px","default":18},
+    {"type":"header","content":"Footer layout and colors"},
+    {"type":"color","id":"background_color","label":"Desktop background","default":"#f9f3e8"},
+    {"type":"color","id":"mobile_background_color","label":"Mobile background","default":"#faf4e9"},
+    {"type":"color","id":"text_color","label":"Body text color","default":"#121c17"},
+    {"type":"color","id":"accent_color","label":"Heading and icon color","default":"#103922"},
+    {"type":"color","id":"divider_color","label":"Divider color","default":"#90a199"},
+    {"type":"range","id":"content_width","label":"Content max width","min":800,"max":1600,"step":20,"unit":"px","default":1280},
+    {"type":"select","id":"desktop_columns","label":"Desktop columns","options":[{"value":"3","label":"3 columns"},{"value":"4","label":"4 columns"},{"value":"5","label":"5 columns"}],"default":"4"},
+    {"type":"range","id":"padding_top","label":"Desktop top padding","min":0,"max":100,"step":2,"unit":"px","default":36},
+    {"type":"range","id":"padding_bottom","label":"Desktop bottom padding","min":0,"max":100,"step":2,"unit":"px","default":26},
+    {"type":"range","id":"menu_heading_size","label":"Menu heading size","min":12,"max":24,"step":1,"unit":"px","default":16},
+    {"type":"range","id":"menu_link_size","label":"Menu link size","min":12,"max":22,"step":1,"unit":"px","default":16},
+    {"type":"checkbox","id":"single_accordion","label":"Open only one accordion at a time on mobile","default":true},
+    {"type":"range","id":"social_icon_size","label":"Social icon size","min":20,"max":52,"step":2,"unit":"px","default":38},
+    {"type":"header","content":"Brand and bottom bar"},
+    {"type":"image_picker","id":"logo","label":"Footer logo image"},
+    {"type":"range","id":"logo_width","label":"Desktop logo width","min":100,"max":400,"step":10,"unit":"px","default":230},
+    {"type":"range","id":"mobile_logo_width","label":"Mobile logo width","min":100,"max":320,"step":10,"unit":"px","default":220},
+    {"type":"checkbox","id":"show_mobile_brand","label":"Show logo and social details on mobile","default":true},
+    {"type":"text","id":"brand_tagline","label":"Brand tagline","default":"A little extra from home."},
+    {"type":"text","id":"copyright_text","label":"Copyright name and message","default":"Jara Afrik. All rights reserved."},
+    {"type":"link_list","id":"legal_menu","label":"Bottom legal navigation"}
+  ],
+  "blocks": [
+    {"type":"menu","name":"Navigation menu","limit":8,"settings":[
+      {"type":"text","id":"heading","label":"Heading","default":"Customer Care"},
+      {"type":"link_list","id":"menu","label":"Navigation menu"},
+      {"type":"checkbox","id":"open_on_mobile","label":"Expanded by default on mobile","default":false}
+    ]},
+    {"type":"social","name":"Social media icons","limit":2,"settings":[
+      {"type":"text","id":"heading","label":"Heading","default":"Stay Connected"},
+      {"type":"url","id":"instagram_url","label":"Instagram URL"},
+      {"type":"url","id":"facebook_url","label":"Facebook URL"},
+      {"type":"url","id":"tiktok_url","label":"TikTok URL"},
+      {"type":"url","id":"youtube_url","label":"YouTube URL"},
+      {"type":"url","id":"pinterest_url","label":"Pinterest URL"},
+      {"type":"image_picker","id":"custom_icon","label":"Additional social icon"},
+      {"type":"url","id":"custom_url","label":"Additional social URL"},
+      {"type":"text","id":"custom_label","label":"Additional social accessible label","default":"Follow us"}
+    ]},
+    {"type":"icon_text","name":"Icon with text","limit":4,"settings":[
+      {"type":"image_picker","id":"icon","label":"Custom icon (optional)"},
+      {"type":"richtext","id":"text","label":"Text","default":"<p>Currently shipping within Canada only.</p>"}
+    ]},
+    {"type":"custom_text","name":"Custom text","limit":4,"settings":[
+      {"type":"text","id":"heading","label":"Heading","default":"More information"},
+      {"type":"richtext","id":"text","label":"Text","default":"<p>Add a note for customers.</p>"}
+    ]}
+  ],
+  "presets": [{"name":"Jara Afrik custom footer","blocks":[
+    {"type":"menu","settings":{"heading":"Customer Care"}},
+    {"type":"menu","settings":{"heading":"About Jara Afrik"}},
+    {"type":"menu","settings":{"heading":"Shop"}},
+    {"type":"social","settings":{"heading":"Stay Connected"}},
+    {"type":"icon_text","settings":{"text":"<p>Currently shipping within Canada only.</p>"}}
+  ]}]
+}
+{% endschema %}
