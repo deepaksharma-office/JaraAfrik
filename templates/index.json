@@ -416,6 +416,7 @@
           "settings": {
             "image": "shopify://shop_images/Enhanced_Image.png",
             "link": "",
+            "visibility": "desktop",
             "image_ratio": "square",
             "width": "fill",
             "custom_width": 100,
@@ -675,6 +676,7 @@
                   "settings": {
                     "image": "{{ closest.collection.image }}",
                     "link": "",
+                    "visibility": "both",
                     "image_ratio": "square",
                     "width": "fill",
                     "custom_width": 100,
@@ -1614,6 +1616,7 @@
           "settings": {
             "image": "shopify://shop_images/d019df4c99ec8180029f9ba5ed95c9b5d1c8e5b1.jpg",
             "link": "",
+            "visibility": "both",
             "image_ratio": "square",
             "width": "fill",
             "custom_width": 100,
