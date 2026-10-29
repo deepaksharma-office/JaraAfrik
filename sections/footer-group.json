@@ -17,8 +17,8 @@
         "menu_nJAKkL": {
           "type": "menu",
           "settings": {
-            "heading": "Customer Care",
-            "menu": "customer-care",
+            "heading": "Shop",
+            "menu": "shop-1",
             "open_on_mobile": false
           }
         },
@@ -26,15 +26,15 @@
           "type": "menu",
           "settings": {
             "heading": "About Jara Afrik",
-            "menu": "new-menu",
+            "menu": "about-jara-afrik",
             "open_on_mobile": false
           }
         },
         "menu_arLzye": {
           "type": "menu",
           "settings": {
-            "heading": "Shop",
-            "menu": "shop",
+            "heading": "Customer Care",
+            "menu": "customer-care-1",
             "open_on_mobile": false
           }
         },
@@ -104,6 +104,7 @@
         "show_mobile_brand": true,
         "brand_tagline": "A little extra from home.",
         "copyright_text": "Jara Afrik. All rights reserved.",
+        "show_payment_icons": true,
         "legal_menu": "policies"
       }
     },
@@ -156,6 +157,7 @@
               "settings": {
                 "image": "shopify://shop_images/d4ef26874b6dfd3bbead774b47f5127cc93cdce2.png",
                 "link": "",
+                "visibility": "both",
                 "image_ratio": "adapt",
                 "width": "custom",
                 "custom_width": 59,
