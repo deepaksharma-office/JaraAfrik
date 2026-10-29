@@ -1,6 +1,7 @@
+
 <div
-  class="custom-image-card custom-image-card--{{ block.settings.aspect_ratio }}"
-  style="    --border-radius: {{ block.settings.radius }}px;"
+  class="custom-image-card custom-image-card--desktop-{{ block.settings.aspect_ratio }} custom-image-card--mobile-{{ block.settings.mobile_aspect_ratio }}"
+  style="--border-radius: {{ block.settings.radius }}px;"
 >
   {% if block.settings.image != blank %}
     {{
@@ -20,65 +21,119 @@
 </div>
 
 {% stylesheet %}
-    .custom-image-card {
-      position: relative;
-      width: 100%;
-      overflow: hidden;
-      border-radius: var(--border-radius);
-    }
+  .custom-image-card {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    border-radius: var(--border-radius);
+  }
 
-    /* Aspect ratios */
-    .custom-image-card--normal {
+  /* Desktop aspect ratios */
+  .custom-image-card--desktop-normal {
+    aspect-ratio: auto;
+  }
+
+  .custom-image-card--desktop-square {
+    aspect-ratio: 1 / 1;
+  }
+
+  .custom-image-card--desktop-portrait-4-5 {
+    aspect-ratio: 4 / 5;
+  }
+
+  .custom-image-card--desktop-portrait-2-3 {
+    aspect-ratio: 2 / 3;
+  }
+
+  .custom-image-card--desktop-landscape-5-4 {
+    aspect-ratio: 5 / 4;
+  }
+
+  .custom-image-card--desktop-landscape-4-3 {
+    aspect-ratio: 4 / 3;
+  }
+
+  .custom-image-card--desktop-landscape-16-9 {
+    aspect-ratio: 16 / 9;
+  }
+
+  .custom-image-card--desktop-landscape-16-5 {
+    aspect-ratio: 16 / 5;
+  }
+
+  /* Image */
+  .custom-image-card__image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  .custom-image-card--desktop-normal .custom-image-card__image {
+    height: auto;
+  }
+
+  /* Content overlay */
+  .custom-image-card__content {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+  }
+
+  /* Mobile aspect ratios */
+  @media screen and (max-width: 749px) {
+    .custom-image-card--mobile-normal {
       aspect-ratio: auto;
     }
 
-    .custom-image-card--square {
+    .custom-image-card--mobile-square {
       aspect-ratio: 1 / 1;
     }
 
-    .custom-image-card--portrait-4-5 {
+    .custom-image-card--mobile-portrait-4-5 {
       aspect-ratio: 4 / 5;
     }
 
-    .custom-image-card--portrait-2-3 {
+    .custom-image-card--mobile-portrait-2-3 {
       aspect-ratio: 2 / 3;
     }
 
-    .custom-image-card--landscape-5-4 {
+    .custom-image-card--mobile-landscape-5-4 {
       aspect-ratio: 5 / 4;
     }
 
-    .custom-image-card--landscape-4-3 {
+    .custom-image-card--mobile-landscape-4-3 {
       aspect-ratio: 4 / 3;
     }
 
-    .custom-image-card--landscape-16-9 {
+    .custom-image-card--mobile-landscape-16-9 {
       aspect-ratio: 16 / 9;
     }
 
-  .custom-image-card--landscape-16-5 {
+    .custom-image-card--mobile-landscape-16-5 {
       aspect-ratio: 16 / 5;
     }
 
+    /* Default image sizing for fixed ratios */
     .custom-image-card__image {
-      display: block;
       width: 100%;
       height: 100%;
       object-fit: cover;
-      object-position: center;
     }
 
-    .custom-image-card--normal .custom-image-card__image {
+    /* Natural image height for normal ratio */
+    .custom-image-card--mobile-normal .custom-image-card__image {
       height: auto;
     }
 
-    .custom-image-card__content {
-      position: absolute;
-      inset: 0;
-      width: 100%;
+    /* Fixed mobile ratios must override desktop normal */
+    .custom-image-card--desktop-normal:not(.custom-image-card--mobile-normal) .custom-image-card__image {
       height: 100%;
-      z-index: 1;
     }
+  }
 {% endstylesheet %}
 
 {% schema %}
@@ -92,9 +147,13 @@
       "label": "Image"
     },
     {
+      "type": "header",
+      "content": "Desktop settings"
+    },
+    {
       "type": "select",
       "id": "aspect_ratio",
-      "label": "Card aspect ratio",
+      "label": "Desktop aspect ratio",
       "options": [
         {
           "value": "normal",
@@ -130,6 +189,50 @@
         }
       ],
       "default": "normal"
+    },
+    {
+      "type": "header",
+      "content": "Mobile settings"
+    },
+    {
+      "type": "select",
+      "id": "mobile_aspect_ratio",
+      "label": "Mobile aspect ratio",
+      "options": [
+        {
+          "value": "normal",
+          "label": "Normal"
+        },
+        {
+          "value": "square",
+          "label": "Square (1:1)"
+        },
+        {
+          "value": "portrait-4-5",
+          "label": "Portrait (4:5)"
+        },
+        {
+          "value": "portrait-2-3",
+          "label": "Portrait (2:3)"
+        },
+        {
+          "value": "landscape-5-4",
+          "label": "Landscape (5:4)"
+        },
+        {
+          "value": "landscape-4-3",
+          "label": "Landscape (4:3)"
+        },
+        {
+          "value": "landscape-16-9",
+          "label": "Landscape (16:9)"
+        },
+        {
+          "value": "landscape-16-5",
+          "label": "Landscape (16:5)"
+        }
+      ],
+      "default": "portrait-4-5"
     },
     {
       "type": "range",
