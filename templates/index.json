@@ -896,6 +896,7 @@
           "settings": {
             "image": "shopify://shop_images/a790b02d9f94a523dd321851ddcab0a06d31beac.jpg",
             "aspect_ratio": "portrait-4-5",
+            "mobile_aspect_ratio": "portrait-4-5",
             "radius": 25
           },
           "blocks": {
@@ -1096,6 +1097,7 @@
           "settings": {
             "image": "shopify://shop_images/0c44faa321063550f841dce0c17f142ba7dd7da2.jpg",
             "aspect_ratio": "portrait-4-5",
+            "mobile_aspect_ratio": "portrait-4-5",
             "radius": 25
           },
           "blocks": {
@@ -1334,6 +1336,7 @@
           "settings": {
             "image": "shopify://shop_images/d244f8c9d2783f2102c82220632f3dbcc8b4b4d6.jpg",
             "aspect_ratio": "landscape-16-5",
+            "mobile_aspect_ratio": "portrait-4-5",
             "radius": 25
           },
           "blocks": {
@@ -1578,6 +1581,7 @@
       "block_order": [
         "overlay_image_jVmXh7"
       ],
+      "disabled": true,
       "name": "t:names.custom_section",
       "settings": {
         "content_direction": "row",
@@ -1947,7 +1951,7 @@
         "align_baseline": false,
         "horizontal_alignment_flex_direction_column": "flex-start",
         "vertical_alignment_flex_direction_column": "center",
-        "gap": 32,
+        "gap": 16,
         "section_width": "page-width",
         "section_height": "",
         "section_height_custom": 50,
