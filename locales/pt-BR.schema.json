@@ -586,6 +586,9 @@
     "title_preset": "Predefinição de título"
   },
   "options": {
+    "both": "Ambos",
+    "desktop": "Computador",
+    "mobile": "Dispositivo móvel",
     "apple": "Apple",
     "arrow": "Seta",
     "auto": "Automático",

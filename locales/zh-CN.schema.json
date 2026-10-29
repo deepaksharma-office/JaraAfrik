@@ -586,6 +586,9 @@
     "title_preset": "标题预设"
   },
   "options": {
+    "both": "两者",
+    "desktop": "桌面设备",
+    "mobile": "移动设备",
     "apple": "Apple",
     "arrow": "箭头",
     "auto": "自动",

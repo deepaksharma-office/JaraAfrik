@@ -586,6 +586,9 @@
     "title_preset": "Préréglage du titre"
   },
   "options": {
+    "both": "Les deux",
+    "desktop": "Ordinateur",
+    "mobile": "Mobile",
     "apple": "Pomme",
     "arrow": "Flèche",
     "banana": "Banane",

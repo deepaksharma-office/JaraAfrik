@@ -586,6 +586,9 @@
     "title_preset": "Forudindstilling for titel"
   },
   "options": {
+    "both": "Begge",
+    "desktop": "Computer",
+    "mobile": "Mobil",
     "apple": "Apple",
     "arrow": "Pil",
     "auto": "Auto",

@@ -586,6 +586,9 @@
     "title_preset": "Preimpostazione titolo"
   },
   "options": {
+    "both": "Entrambi",
+    "desktop": "Desktop",
+    "mobile": "Dispositivo mobile",
     "apple": "Mela",
     "arrow": "Freccia",
     "auto": "Automatico",

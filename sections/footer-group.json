@@ -104,6 +104,7 @@
         "show_mobile_brand": true,
         "brand_tagline": "A little extra from home.",
         "copyright_text": "Jara Afrik. All rights reserved.",
+        "show_payment_icons": true,
         "legal_menu": "policies"
       }
     },

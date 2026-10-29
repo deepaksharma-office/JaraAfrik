@@ -586,6 +586,9 @@
     "title_preset": "標題預設設定"
   },
   "options": {
+    "both": "兩者",
+    "desktop": "桌面裝置",
+    "mobile": "行動裝置",
     "apple": "Apple",
     "arrow": "箭頭",
     "auto": "自動",

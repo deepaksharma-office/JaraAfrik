@@ -19,7 +19,7 @@
 %}
 
 {% capture class %}
-  image-block image-block--{{ block.id }} image-block--height-{{ block_settings.height }} spacing-style size-style
+  image-block image-block--{{ block.id }} image-block--height-{{ block_settings.height }} spacing-style size-style{% if block_settings.visibility == 'desktop' %} hidden--mobile{% elsif block_settings.visibility == 'mobile' %} hidden--desktop{% endif %}
 {% endcapture %}
 
 {% capture style %}
@@ -126,6 +126,26 @@
       "type": "url",
       "id": "link",
       "label": "t:settings.link"
+    },
+    {
+      "type": "select",
+      "id": "visibility",
+      "label": "t:settings.visibility",
+      "options": [
+        {
+          "value": "both",
+          "label": "t:options.both"
+        },
+        {
+          "value": "desktop",
+          "label": "t:options.desktop"
+        },
+        {
+          "value": "mobile",
+          "label": "t:options.mobile"
+        }
+      ],
+      "default": "both"
     },
     {
       "type": "header",

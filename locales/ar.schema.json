@@ -406,6 +406,9 @@
     "comparison_slider": "شريط تمرير المقارنة"
   },
   "options": {
+    "both": "كلاهما",
+    "desktop": "سطح المكتب",
+    "mobile": "الهاتف المحمول",
     "above_carousel": "أعلى العرض الدائري",
     "accent": "تمييز",
     "all": "الكل",

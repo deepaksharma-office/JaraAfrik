@@ -586,6 +586,9 @@
     "title_preset": "Titelvoorinstelling"
   },
   "options": {
+    "both": "Beide",
+    "desktop": "Desktop",
+    "mobile": "Mobiel",
     "apple": "Apple",
     "arrow": "Pijl",
     "banana": "Banaan",

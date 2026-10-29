@@ -436,6 +436,7 @@
     "below_image": "Below image",
     "bento": "Bento",
     "black": "Black",
+    "both": "Both",
     "bluesky": "Bluesky",
     "blur": "Blur",
     "body": "Body",
@@ -486,6 +487,7 @@
     // Icon option for dietary restriction indication
     "dairy_free": "Dairy free",
     "default": "Default",
+    "desktop": "Desktop",
     "diamond": "Diamond",
     "dissolve": "Dissolve",
     "dots": "Dots",
@@ -585,6 +587,7 @@
     "media_second": "Media second",
     // Size/weight option between small/light and large/heavy
     "medium": "Medium",
+    "mobile": "Mobile",
     "modal": "Modal",
     "narrow": "Narrow",
     "never": "Never",

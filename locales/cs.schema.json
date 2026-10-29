@@ -586,6 +586,9 @@
     "title_preset": "Předvolba nadpisu"
   },
   "options": {
+    "both": "Obojí",
+    "desktop": "Počítač",
+    "mobile": "Mobil",
     "apple": "Apple",
     "arrow": "Šipka",
     "auto": "Automaticky",

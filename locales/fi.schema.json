@@ -586,6 +586,9 @@
     "title_preset": "Otsikon esiasetus"
   },
   "options": {
+    "both": "Molemmat",
+    "desktop": "Tietokone",
+    "mobile": "Mobiili",
     "apple": "Omena",
     "arrow": "Nuoli",
     "auto": "Automaattinen",

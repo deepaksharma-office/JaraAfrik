@@ -406,6 +406,9 @@
     "comparison_slider": "موازنہ کرنے والا سلائیڈر"
   },
   "options": {
+    "both": "دونوں",
+    "desktop": "ڈیسک ٹاپ",
+    "mobile": "موبائل",
     "above_carousel": "کیرول کے اوپر",
     "accent": "ایکسنٹ",
     "all": "سبھی",

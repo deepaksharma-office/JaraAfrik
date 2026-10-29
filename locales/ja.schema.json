@@ -586,6 +586,9 @@
     "title_preset": "タイトルプリセット"
   },
   "options": {
+    "both": "両方",
+    "desktop": "デスクトップ",
+    "mobile": "モバイル",
     "apple": "Apple",
     "arrow": "矢印",
     "auto": "自動",

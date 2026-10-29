@@ -586,6 +586,9 @@
     "title_preset": "Preajuste del título"
   },
   "options": {
+    "both": "Ambos",
+    "desktop": "Escritorio",
+    "mobile": "Móvil",
     "apple": "Apple",
     "arrow": "Flecha",
     "auto": "Auto",

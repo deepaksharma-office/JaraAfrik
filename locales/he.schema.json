@@ -406,6 +406,9 @@
     "comparison_slider": "מחוון השוואה"
   },
   "options": {
+    "both": "שניהם",
+    "desktop": "מחשב",
+    "mobile": "נייד",
     "above_carousel": "מעל הקרוסלה",
     "accent": "הדגשה",
     "all": "הכול",

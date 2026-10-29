@@ -586,6 +586,9 @@
     "title_preset": "Gotowe ustawienie tytułu"
   },
   "options": {
+    "both": "Oba",
+    "desktop": "Komputer",
+    "mobile": "Urządzenie mobilne",
     "apple": "Apple",
     "arrow": "Strzałka",
     "banana": "Banan",

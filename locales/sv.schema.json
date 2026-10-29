@@ -586,6 +586,9 @@
     "title_preset": "Förinställning för rubrik"
   },
   "options": {
+    "both": "Båda",
+    "desktop": "Dator",
+    "mobile": "Mobil",
     "apple": "Apple",
     "arrow": "Pil",
     "auto": "Auto",

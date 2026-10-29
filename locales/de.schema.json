@@ -586,6 +586,9 @@
     "title_preset": "Titelvoreinstellung"
   },
   "options": {
+    "both": "Beide",
+    "desktop": "Desktop",
+    "mobile": "Mobilgerät",
     "apple": "Apfel",
     "arrow": "Pfeil",
     "banana": "Banane",
