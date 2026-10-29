@@ -14,6 +14,62 @@
     "jara_afrik_footer_bwgBgh": {
       "type": "jara-afrik-footer",
       "blocks": {
+        "payment_icon_p6QhxM": {
+          "type": "payment_icon",
+          "settings": {
+            "image": "shopify://shop_images/visa_1.png",
+            "label": "Visa"
+          }
+        },
+        "payment_icon_8LMwBC": {
+          "type": "payment_icon",
+          "settings": {
+            "image": "shopify://shop_images/discover.png",
+            "label": "Discover"
+          }
+        },
+        "payment_icon_B8jzwr": {
+          "type": "payment_icon",
+          "settings": {
+            "image": "shopify://shop_images/mastercard_1.png",
+            "label": "Mastercard"
+          }
+        },
+        "payment_icon_EaNwhd": {
+          "type": "payment_icon",
+          "settings": {
+            "image": "shopify://shop_images/american-express.png",
+            "label": "American Express"
+          }
+        },
+        "payment_icon_XmWVhb": {
+          "type": "payment_icon",
+          "settings": {
+            "image": "shopify://shop_images/paypal.png",
+            "label": "Paypal"
+          }
+        },
+        "payment_icon_kiGzyF": {
+          "type": "payment_icon",
+          "settings": {
+            "image": "shopify://shop_images/jcb.png",
+            "label": "JCB"
+          }
+        },
+        "payment_icon_dcbxkA": {
+          "type": "payment_icon",
+          "settings": {
+            "image": "shopify://shop_images/samsung-pay.png",
+            "label": "Samsung Pay"
+          }
+        },
+        "payment_icon_Lj6REV": {
+          "type": "payment_icon",
+          "settings": {
+            "image": "shopify://shop_images/google-pay.png",
+            "label": "Google Pay"
+          }
+        },
         "menu_nJAKkL": {
           "type": "menu",
           "settings": {
@@ -59,6 +115,14 @@
         }
       },
       "block_order": [
+        "payment_icon_p6QhxM",
+        "payment_icon_8LMwBC",
+        "payment_icon_B8jzwr",
+        "payment_icon_EaNwhd",
+        "payment_icon_XmWVhb",
+        "payment_icon_kiGzyF",
+        "payment_icon_dcbxkA",
+        "payment_icon_Lj6REV",
         "menu_nJAKkL",
         "menu_xArVhy",
         "menu_arLzye",
