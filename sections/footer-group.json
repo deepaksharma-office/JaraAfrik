@@ -136,7 +136,7 @@
         "newsletter_overlay_opacity": 35,
         "newsletter_text_color": "#ffffff",
         "newsletter_heading": "Get 10% off your first order of $50 or more.",
-        "newsletter_description": "<p>Please also set up the welcome email automation to send subscribers their discount code.</p>",
+        "newsletter_description": "",
         "newsletter_title_size": 36,
         "newsletter_mobile_title_size": 27,
         "email_placeholder": "Email address",
